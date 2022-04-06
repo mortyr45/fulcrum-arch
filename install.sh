@@ -58,7 +58,8 @@ mount --mkdir $EFI_PARTITION /mnt/boot/EFI
 pacstrap /mnt base linux linux-firmware linux-headers btrfs-progs nano grub efibootmgr os-prober
 genfstab -U /mnt > /mnt/etc/fstab
 
-echo "#!/bin/bash\n\nSCRIPT_TIMEZONE=$SCRIPT_TIMEZONE" > /mnt/install.sh
+echo "#!/bin/bash" > /mnt/install.sh
+echo "SCRIPT_TIMEZONE=$SCRIPT_TIMEZONE" >> /mnt/install.sh
 curl -sL https://raw.githubusercontent.com/mortyr45/fulcrum-arch/master/chroot.sh >> /mnt/install.sh
 chmod +x /mnt/install.sh
 arch-chroot /mnt ./install.sh

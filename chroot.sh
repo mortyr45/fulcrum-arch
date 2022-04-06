@@ -1,1 +1,2 @@
-ln -sf /usr/share/zoneinfo/Region/City /etc/localtime
+ln -sf /usr/share/zoneinfo/$SCRIPT_TIMEZONE /etc/localtime
+echo "DUN!"

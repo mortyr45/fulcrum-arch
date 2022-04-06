@@ -58,6 +58,7 @@ mount --mkdir $EFI_PARTITION /mnt/boot/EFI
 pacstrap /mnt base linux linux-firmware linux-headers btrfs-progs nano grub efibootmgr os-prober
 genfstab -U /mnt > /mnt/etc/fstab
 
-curl -sL https://gist.githubusercontent.com/mortyr45/6c4fc233495aa089add01fcf3fd9a707/raw/73412d50421c96e53171265b01630a263dcd5da1/gistfile1.txt > /mnt/install.sh
+echo "#!/bin/bash\n\nSCRIPT_TIMEZONE=$SCRIPT_TIMEZONE"
+curl -sL https://gist.githubusercontent.com/mortyr45/6c4fc233495aa089add01fcf3fd9a707/raw/73412d50421c96e53171265b01630a263dcd5da1/gistfile1.txt >> /mnt/install.sh
 chmod +x /mnt/install.sh
 arch-chroot /mnt ./install.sh

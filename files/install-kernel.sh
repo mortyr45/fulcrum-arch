@@ -22,4 +22,4 @@ else
     esac
   done
 fi
-arch-chroot /mnt pacman --noconfirm -S $(echo $TEMP) linux-firmware
+arch-chroot /mnt pacman --noconfirm -S $($TEMP) linux-firmware

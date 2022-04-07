@@ -5,7 +5,7 @@ printf "Which kernel(s) would you like to install?\n1) linux\n2) linux-lts\n3) l
 echo -n "Choose multiple of them, by separating the numbers with a ','[1]: "
 read;
 if [ -z $REPLY ] ; then
-  arch-chroot /mnt "pacman -S linux linux-firmware linux-headers"
+  TEMP+=" linux linux-firmware linux-headers"
 else
   TEMP=""
   IFS=","
@@ -20,5 +20,5 @@ else
     4)
       TEMP+=" linux-zen linux-zen-firmware linux-zen-headers" ;;
   done
-  arch-chroot /mnt pacman --noconfirm -S $TEMP
 fi
+arch-chroot /mnt pacman --noconfirm -S $TEMP

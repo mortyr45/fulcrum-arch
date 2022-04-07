@@ -26,6 +26,7 @@ for FILE in ${CHROOT_INSTALL_FILES[@]} ; do
 done
 
 sed -ri -e "s!^SCRIPT_TIMEZONE=!SCRIPT_TIMEZONE=$SCRIPT_TIMEZONE!g" /mnt/base.sh
+sed -ri -e "s!^SCRIPT_LOCALE=!SCRIPT_LOCALE=$SCRIPT_LOCALE!g" /mnt/base.sh
 sed -ri -e "s!^SCRIPT_HOSTNAME=!SCRIPT_HOSTNAME=$SCRIPT_HOSTNAME!g" /mnt/base.sh
 sed -ri -e "s!^SCRIPT_BOOTLOADER_ID=!SCRIPT_BOOTLOADER_ID=$SCRIPT_BOOTLOADER_ID!g" /mnt/base.sh
 sed -ri -e "s!^SCRIPT_GRUB_LANG=!SCRIPT_GRUB_LANG=$SCRIPT_GRUB_LANG!g" /mnt/base.sh

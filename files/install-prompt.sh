@@ -30,6 +30,11 @@ while true ; do
   ! [ -z $REPLY ] && SCRIPT_TIMEZONE_CITY=$REPLY
 
   SCRIPT_TIMEZONE="$SCRIPT_TIMEZONE_REGION/$SCRIPT_TIMEZONE_CITY"
+  
+  SCRIPT_LOCALE=en_US.UTF-8
+  echo -n "Locale: [$SCRIPT_LOCALE]:"
+  read;
+  ! [ -z $REPLY ] && SCRIPT_LOCALE=$REPLY
 
   SCRIPT_HOSTNAME=arch
   echo -n "System hostname[$SCRIPT_HOSTNAME]:"
@@ -50,6 +55,7 @@ while true ; do
   echo "EFI partition: $EFI_PARTITION"
   echo "Root partition: $ROOT_PARTITION"
   echo "Timezone: $SCRIPT_TIMEZONE"
+  echo "Locale: $SCRIPT_LOCALE"
   echo "Hostname: $SCRIPT_HOSTNAME"
   echo "Bootloader ID: $SCRIPT_BOOTLOADER_ID"
   echo "Grub language: $SCRIPT_GRUB_LANG"

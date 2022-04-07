@@ -1,7 +1,7 @@
 #!/bin/bash
 
 mkfs.fat -F 32 $EFI_PARTITION
-if [ $SCRIPT_ROOT_PARTITION_SSD == "y" ] ; then
+if [ $SCRIPT_ROOT_PARTITION_SSD ] ; then
   mkfs.btrfs -m single -d single $ROOT_PARTITION
 else
   mkfs.btrfs -m dup -d single $ROOT_PARTITION

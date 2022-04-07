@@ -1,25 +1,13 @@
 #!/bin/bash
 
 ! [ -f "install-prompt.sh" ] && curl -sL https://raw.githubusercontent.com/mortyr45/fulcrum-arch/master/files/install-prompt.sh > install-prompt.sh
+! [ -f "install-partitions.sh" ] && curl -sL https://raw.githubusercontent.com/mortyr45/fulcrum-arch/master/files/install-partitions.sh > install-partitions.sh
 
 source install-prompt.sh
 
+source install-partitions.sh
+
 timedatectl set-ntp true
-
-mkfs.fat -F 32 $EFI_PARTITION
-mkfs.btrfs $ROOT_PARTITION
-mount $ROOT_PARTITION /mnt
-btrfs subvolume create /mnt/@
-btrfs subvolume create /mnt/@home
-btrfs subvolume create /mnt/@cache
-btrfs subvolume create /mnt/@log
-umount /mnt
-mount $ROOT_PARTITION -o subvol=@ /mnt
-mount --mkdir $ROOT_PARTITION -o subvol=@home /mnt/home
-mount --mkdir $ROOT_PARTITION -o subvol=@cache /mnt/var/cache
-mount --mkdir $ROOT_PARTITION -o subvol=@log /mnt/var/log
-mount --mkdir $EFI_PARTITION /mnt/boot/EFI
-
 pacstrap /mnt base linux linux-firmware linux-headers btrfs-progs nano grub efibootmgr os-prober
 genfstab -U /mnt > /mnt/etc/fstab
 

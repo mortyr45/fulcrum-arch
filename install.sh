@@ -34,10 +34,28 @@ if ! [ -z $REPLY ] ; then SCRIPT_TIMEZONE_CITY=$REPLY ; fi
 
 SCRIPT_TIMEZONE="$SCRIPT_TIMEZONE_REGION/$SCRIPT_TIMEZONE_CITY"
 
+SCRIPT_HOSTNAME=arch
+echo -n "System hostname[$SCRIPT_HOSTNAME]:"
+read;
+if ! [ -z $REPLY ] ; then SCRIPT_HOSTNAME=$REPLY ; fi
+
+SCRIPT_BOOTLOADER_ID=arch
+echo -n "Identifier in the bootloader[$SCRIPT_BOOTLOADER_ID]:"
+read;
+if ! [ -z $REPLY ] ; then SCRIPT_BOOTLOADER_ID=$REPLY ; fi
+
+SCRIPT_GRUB_LANG=arch
+echo -n "Language in the bootloader[$SCRIPT_GRUB_LANG]:"
+read;
+if ! [ -z $REPLY ] ; then SCRIPT_GRUB_LANG=$REPLY ; fi
+
 clear
 echo "EFI partition: $EFI_PARTITION"
 echo "Root partition: ROOT_PARTITION"
 echo "Timezone: $SCRIPT_TIMEZONE"
+echo "Timezone: $SCRIPT_HOSTNAME"
+echo "Timezone: $SCRIPT_BOOTLOADER_ID"
+echo "Timezone: $SCRIPT_GRUB_LANG"
 echo -n "Are the settings correct?[y/n]"
 read;
 if [ $REPLY != "y" ] ; then exit 0 ; fi

@@ -8,14 +8,14 @@ while true ; do
   [ $? == 0 ] && EFI_INSTALL=1
   
   SCRIPT_EFI_PARTITION=/dev/sda1
-  echo -n "Device and partition number for EFI[$EFI_PARTITION]:"
+  echo -n "Device and partition number for EFI[$SCRIPT_EFI_PARTITION]:"
   read;
-  ! [ -z $REPLY ] && EFI_PARTITION=$REPLY
+  ! [ -z $REPLY ] && SCRIPT_EFI_PARTITION=$REPLY
 
   SCRIPT_ROOT_PARTITION=/dev/sda2
-  echo -n "Device and partition number for root[$ROOT_PARTITION]:"
+  echo -n "Device and partition number for root[$SCRIPT_ROOT_PARTITION]:"
   read;
-  ! [ -z $REPLY ] && ROOT_PARTITION=$REPLY
+  ! [ -z $REPLY ] && SCRIPT_ROOT_PARTITION=$REPLY
   
   SCRIPT_ROOT_PARTITION_SSD=false
   echo -n "Is the root partition on an ssd?[y/N]"

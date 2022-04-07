@@ -7,7 +7,7 @@ for FILE in ${INSTALL_FILES[@]} ; do
   [ $? != 0 ] && exit 1
 done
 
-source install-base.sh
+source install-prompt.sh
 [ $? != 0 ] && exit 1
 source install-partitions.sh
 [ $? != 0 ] && exit 1

@@ -2,9 +2,9 @@
 
 mkfs.fat -F 32 $SCRIPT_EFI_PARTITION
 if [ $SCRIPT_ROOT_PARTITION_SSD ] ; then
-  mkfs.btrfs -m single -d single $ROOT_PARTITION
+  mkfs.btrfs -m single -d single $SCRIPT_ROOT_PARTITION
 else
-  mkfs.btrfs -m dup -d single $ROOT_PARTITION
+  mkfs.btrfs -m dup -d single $SCRIPT_ROOT_PARTITION
 fi
 mount $SCRIPT_ROOT_PARTITION /mnt
 btrfs subvolume create /mnt/@

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 mkfs.fat -F 32 $EFI_PARTITION
-while true
+while true ; do
   echo -n "Is the root partition on an ssd?[y/n]"
   read;
   ! [ -z $REPLY ] && break

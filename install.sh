@@ -1,7 +1,5 @@
 #!/bin/bash
 
-# For personal use only. No warranties of any kind if you use it!
-
 clear
 
 EFI_INSTALL=0

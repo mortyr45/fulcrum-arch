@@ -4,10 +4,12 @@ INSTALL_FILES=("prompt" "partitions")
 
 for FILE in $INSTALL_FILES ; do
   ! [ -f "install-$FILE.sh" ] && curl -sL https://raw.githubusercontent.com/mortyr45/fulcrum-arch/master/files/install-$FILE.sh > install-$FILE.sh
+  [ $? != 0 ] exit 1
 done
 
 for FILE in $INSTALL_FILES ; do
   source install-$FILE.sh
+  [ $? != 0 ] exit 1
 done
 
 timedatectl set-ntp true

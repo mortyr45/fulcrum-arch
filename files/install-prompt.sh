@@ -7,12 +7,12 @@ while true ; do
   ls /sys/firmware/efi/efivars > /dev/null
   [ $? == 0 ] && EFI_INSTALL=1
   
-  EFI_PARTITION=/dev/sda1
+  SCRIPT_EFI_PARTITION=/dev/sda1
   echo -n "Device and partition number for EFI[$EFI_PARTITION]:"
   read;
   ! [ -z $REPLY ] && EFI_PARTITION=$REPLY
 
-  ROOT_PARTITION=/dev/sda2
+  SCRIPT_ROOT_PARTITION=/dev/sda2
   echo -n "Device and partition number for root[$ROOT_PARTITION]:"
   read;
   ! [ -z $REPLY ] && ROOT_PARTITION=$REPLY
@@ -57,8 +57,8 @@ while true ; do
   ! [ -z $REPLY ] && SCRIPT_GRUB_LANG=$REPLY
 
   clear
-  echo "EFI partition: $EFI_PARTITION"
-  echo "Root partition: $ROOT_PARTITION"
+  echo "EFI partition: $SCRIPT_EFI_PARTITION"
+  echo "Root partition: $SCRIPT_ROOT_PARTITION"
   echo "Timezone: $SCRIPT_TIMEZONE"
   echo "Locale: $SCRIPT_LOCALE"
   echo "Hostname: $SCRIPT_HOSTNAME"

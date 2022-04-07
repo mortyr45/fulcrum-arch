@@ -5,7 +5,7 @@ while true ; do
   echo -n "Is the root partition on an ssd?[y/n]"
   read;
   ! [ -z $REPLY ] && break
-do
+done
 if [ $REPLY == "y" ] ; then
   mkfs.btrfs -m single -d single $ROOT_PARTITION
 else

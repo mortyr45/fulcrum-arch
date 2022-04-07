@@ -37,12 +37,12 @@ echo -n "System hostname[$SCRIPT_HOSTNAME]:"
 read;
 if ! [ -z $REPLY ] ; then SCRIPT_HOSTNAME=$REPLY ; fi
 
-SCRIPT_BOOTLOADER_ID=arch
+SCRIPT_BOOTLOADER_ID=GRUB
 echo -n "Identifier in the bootloader[$SCRIPT_BOOTLOADER_ID]:"
 read;
 if ! [ -z $REPLY ] ; then SCRIPT_BOOTLOADER_ID=$REPLY ; fi
 
-SCRIPT_GRUB_LANG=arch
+SCRIPT_GRUB_LANG=en
 echo -n "Language in the bootloader[$SCRIPT_GRUB_LANG]:"
 read;
 if ! [ -z $REPLY ] ; then SCRIPT_GRUB_LANG=$REPLY ; fi

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-INSTALL_FILES=("prompt" "partitions" "kernel")
+INSTALL_FILES=("prompt" "partitions" "kernel" "finish")
 
 for FILE in ${INSTALL_FILES[@]} ; do
   ! [ -f "install-$FILE.sh" ] && curl -sL https://raw.githubusercontent.com/mortyr45/fulcrum-arch/master/files/install-$FILE.sh > install-$FILE.sh
@@ -31,3 +31,5 @@ sed -ri -e "s!^SCRIPT_BOOTLOADER_ID=!SCRIPT_BOOTLOADER_ID=$SCRIPT_BOOTLOADER_ID!
 sed -ri -e "s!^SCRIPT_GRUB_LANG=!SCRIPT_GRUB_LANG=$SCRIPT_GRUB_LANG!g" /mnt/base.sh
 
 arch-chroot /mnt
+
+source install-finish.sh

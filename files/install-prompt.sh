@@ -55,6 +55,12 @@ while true ; do
   echo -n "Language in the bootloader[$SCRIPT_GRUB_LANG]:"
   read;
   ! [ -z $REPLY ] && SCRIPT_GRUB_LANG=$REPLY
+  
+  SCRIPT_KERNEL="1"
+  printf "Which kernel(s) would you like to install?\n1) linux-lts\n2) linux\n3) linux-hardened\n4) linux-zen\n"
+  echo -n "Choose multiple of them, by separating the numbers with a ','[$SCRIPT_KERNEL]: "
+  read;
+  ! [ -z $REPLY ] && SCRIPT_GRUB_LANG=$REPLY
 
   clear
   echo "EFI partition: $SCRIPT_EFI_PARTITION"

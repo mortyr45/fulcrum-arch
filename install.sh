@@ -7,10 +7,10 @@ for FILE in ${INSTALL_FILES[@]} ; do
   [ $? != 0 ] && exit 1
 done
 
-for FILE in ${INSTALL_FILES[@]} ; do
-  source install-$FILE.sh
-  [ $? != 0 ] && exit 1
-done
+source install-base.sh
+[ $? != 0 ] && exit 1
+source install-partitions.sh
+[ $? != 0 ] && exit 1
 
 timedatectl set-ntp true
 pacstrap /mnt base btrfs-progs nano grub efibootmgr os-prober

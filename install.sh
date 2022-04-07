@@ -14,6 +14,7 @@ done
 
 timedatectl set-ntp true
 pacstrap /mnt base btrfs-progs nano grub efibootmgr os-prober
+genfstab -U /mnt > /mnt/etc/fstab
 
 CHROOT_INSTALL_FILES=("base" "kernel")
 for FILE in ${CHROOT_INSTALL_FILES} ; do

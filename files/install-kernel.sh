@@ -21,5 +21,6 @@ else
       TEMP+=" linux-zen linux-zen-headers" ;;
     esac
   done
+  IFS=" "
 fi
-arch-chroot /mnt pacman --noconfirm -S $($TEMP) linux-firmware
+arch-chroot /mnt pacman --noconfirm -S $TEMP linux-firmware

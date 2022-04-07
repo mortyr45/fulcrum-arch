@@ -38,6 +38,9 @@ clear
 echo "EFI partition: $EFI_PARTITION"
 echo "Root partition: ROOT_PARTITION"
 echo "Timezone: $SCRIPT_TIMEZONE"
+echo -n "Are the settings correct?[y/n]"
+read;
+if [ $REPLY != "y" ] ; then exit 0 ; fi
 
 timedatectl set-ntp true
 

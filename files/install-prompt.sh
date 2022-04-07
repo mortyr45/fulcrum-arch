@@ -16,6 +16,11 @@ while true ; do
   echo -n "Device and partition number for root[$ROOT_PARTITION]:"
   read;
   ! [ -z $REPLY ] && ROOT_PARTITION=$REPLY
+  
+  SCRIPT_ROOT_PARTITION_SSD=n
+  echo -n "Is the root partition on an ssd?[y/N]"
+  read;
+  [ $REPLY == "y" ] SCRIPT_ROOT_PARTITION_SSD=$REPLY
 
   SCRIPT_TIMEZONE_REGION=Europe
   ls /usr/share/zoneinfo

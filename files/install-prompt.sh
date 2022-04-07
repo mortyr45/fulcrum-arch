@@ -6,6 +6,16 @@ while true ; do
   EFI_INSTALL=0
   ls /sys/firmware/efi/efivars > /dev/null
   [ $? == 0 ] && EFI_INSTALL=1
+  
+  EFI_PARTITION=/dev/sda1
+  echo -n "Device and partition number for EFI[$EFI_PARTITION]:"
+  read;
+  ! [ -z $REPLY ] && EFI_PARTITION=$REPLY
+
+  ROOT_PARTITION=/dev/sda2
+  echo -n "Device and partition number for root[$ROOT_PARTITION]:"
+  read;
+  ! [ -z $REPLY ] && ROOT_PARTITION=$REPLY
 
   SCRIPT_TIMEZONE_REGION=Europe
   ls /usr/share/zoneinfo
@@ -37,6 +47,8 @@ while true ; do
   ! [ -z $REPLY ] && SCRIPT_GRUB_LANG=$REPLY
 
   clear
+  echo "EFI partition: $EFI_PARTITION"
+  echo "Root partition: $ROOT_PARTITION"
   echo "Timezone: $SCRIPT_TIMEZONE"
   echo "Hostname: $SCRIPT_HOSTNAME"
   echo "Bootloader ID: $SCRIPT_BOOTLOADER_ID"

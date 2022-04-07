@@ -22,3 +22,5 @@ mount --mkdir $ROOT_PARTITION -o subvol=@home /mnt/home
 mount --mkdir $ROOT_PARTITION -o subvol=@cache /mnt/var/cache
 mount --mkdir $ROOT_PARTITION -o subvol=@log /mnt/var/log
 mount --mkdir $EFI_PARTITION /mnt/boot/EFI
+
+genfstab -U /mnt > /mnt/etc/fstab

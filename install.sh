@@ -16,17 +16,18 @@ timedatectl set-ntp true
 pacstrap /mnt base btrfs-progs nano grub efibootmgr os-prober
 genfstab -U /mnt > /mnt/etc/fstab
 
-echo -n "Which kernel(s) would you like to install?\n1) linux\n2) linux-lts\n3) linux-hardened\n4) linux-zen\nChoose multiple of them, by separating the numbers with a ','[1]: "
+clear
+printf "Which kernel(s) would you like to install?\n1) linux\n2) linux-lts\n3) linux-hardened\n4) linux-zen"
+echo -n "Choose multiple of them, by separating the numbers with a ','[1]: "
 read;
 if [ -z $REPLY ] ; then
   arch-chroot /mnt "pacman -S linux linux-firmware linux-headers"
 else
   IFS=","
   for KERNEL in $REPLY ; do
-    echo "You chose $KERNEL"
+    arch-chroot /mnt "pacman -S $KERNEL $KERNEL-firmware $KERNEL-headers"
   done
 fi
-exit 0
 
 CHROOT_INSTALL_FILES=("base" "kernel")
 for FILE in ${CHROOT_INSTALL_FILES} ; do

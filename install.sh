@@ -16,8 +16,6 @@ timedatectl set-ntp true
 pacstrap /mnt base btrfs-progs nano grub efibootmgr os-prober
 genfstab -U /mnt > /mnt/etc/fstab
 
-exit 0
-
 source install-kernel.sh
 
 CHROOT_INSTALL_FILES=("base")

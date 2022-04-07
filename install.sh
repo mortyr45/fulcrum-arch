@@ -19,7 +19,7 @@ genfstab -U /mnt > /mnt/etc/fstab
 source install-kernel.sh
 
 CHROOT_INSTALL_FILES=("base")
-for FILE in ${CHROOT_INSTALL_FILES} ; do
+for FILE in ${CHROOT_INSTALL_FILES[@]} ; do
   ! [ -f "install-$FILE.sh" ] && curl -sL https://raw.githubusercontent.com/mortyr45/fulcrum-arch/master/files/install-chroot-$FILE.sh > /mnt/install-$FILE.sh
   [ $? != 0 ] && exit 1
   chmod +x /mnt/install-$FILE.sh

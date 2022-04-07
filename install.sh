@@ -23,10 +23,20 @@ read;
 if [ -z $REPLY ] ; then
   arch-chroot /mnt "pacman -S linux linux-firmware linux-headers"
 else
+  TEMP=""
   IFS=","
   for KERNEL in $REPLY ; do
-    arch-chroot /mnt pacman --noconfirm -S $KERNEL $KERNEL-firmware $KERNEL-headers
+    case $KERNEL in
+    1)
+      TEMP+=" linux linux-firmware linux-headers" ;;
+    2)
+      TEMP+=" linux-lts linux-lts-firmware linux-lts-headers" ;;
+    3)
+      TEMP+=" linux-hardened linux-hardened-firmware linux-hardened-headers" ;;
+    4)
+      TEMP+=" linux-zen linux-zen-firmware linux-zen-headers" ;;
   done
+  arch-chroot /mnt pacman --noconfirm -S $TEMP
 fi
 
 CHROOT_INSTALL_FILES=("base")

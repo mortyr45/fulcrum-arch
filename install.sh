@@ -1,8 +1,8 @@
 #!/bin/bash
 
-if ! [ -f "install-prompt.sh" ]
+if ! [ -f "install-prompt.sh" ] ; then
   curl -sL https://raw.githubusercontent.com/mortyr45/fulcrum-arch/master/files/install-prompt.sh > install-prompt.sh
- fi
+fi
 
 source install-prompt.sh
 

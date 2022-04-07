@@ -19,6 +19,7 @@ else
       TEMP+=" linux-hardened linux-hardened-firmware linux-hardened-headers" ;;
     4)
       TEMP+=" linux-zen linux-zen-firmware linux-zen-headers" ;;
+    esac
   done
 fi
 arch-chroot /mnt pacman --noconfirm -S $TEMP

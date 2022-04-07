@@ -1,11 +1,14 @@
 #!/bin/bash
 
-! [ -f "install-prompt.sh" ] && curl -sL https://raw.githubusercontent.com/mortyr45/fulcrum-arch/master/files/install-prompt.sh > install-prompt.sh
-! [ -f "install-partitions.sh" ] && curl -sL https://raw.githubusercontent.com/mortyr45/fulcrum-arch/master/files/install-partitions.sh > install-partitions.sh
+INSTALL_FILES=("prompt" "partitions")
 
-source install-prompt.sh
+for FILE in $INSTALL_FILES ; do
+  ! [ -f "install-$FILE.sh" ] && curl -sL https://raw.githubusercontent.com/mortyr45/fulcrum-arch/master/files/install-$FILE.sh > install-$FILE.sh
+done
 
-source install-partitions.sh
+for FILE in $INSTALL_FILES ; do
+  source install-$FILE.sh
+done
 
 timedatectl set-ntp true
 pacstrap /mnt base linux linux-firmware linux-headers btrfs-progs nano grub efibootmgr os-prober

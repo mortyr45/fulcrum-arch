@@ -51,9 +51,9 @@ clear
 echo "EFI partition: $EFI_PARTITION"
 echo "Root partition: $ROOT_PARTITION"
 echo "Timezone: $SCRIPT_TIMEZONE"
-echo "Timezone: $SCRIPT_HOSTNAME"
-echo "Timezone: $SCRIPT_BOOTLOADER_ID"
-echo "Timezone: $SCRIPT_GRUB_LANG"
+echo "Hostname: $SCRIPT_HOSTNAME"
+echo "Bootloader ID: $SCRIPT_BOOTLOADER_ID"
+echo "Grub language: $SCRIPT_GRUB_LANG"
 echo -n "Are the settings correct?[y/n]"
 read;
 if [ $REPLY != "y" ] ; then exit 0 ; fi

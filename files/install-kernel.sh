@@ -12,14 +12,14 @@ else
   for KERNEL in $REPLY ; do
     case $KERNEL in
     1)
-      TEMP+=" linux linux-firmware linux-headers" ;;
+      TEMP+=" linux linux-headers" ;;
     2)
-      TEMP+=" linux-lts linux-lts-firmware linux-lts-headers" ;;
+      TEMP+=" linux-lts linux-lts-headers" ;;
     3)
-      TEMP+=" linux-hardened linux-hardened-firmware linux-hardened-headers" ;;
+      TEMP+=" linux-hardened linux-hardened-headers" ;;
     4)
-      TEMP+=" linux-zen linux-zen-firmware linux-zen-headers" ;;
+      TEMP+=" linux-zen linux-zen-headers" ;;
     esac
   done
 fi
-arch-chroot /mnt pacman --noconfirm -S $TEMP
+arch-chroot /mnt pacman --noconfirm -S $TEMP linux-firmware

@@ -1,7 +1,11 @@
 #!/bin/bash
 
 mkfs.fat -F 32 $EFI_PARTITION
-mkfs.btrfs $ROOT_PARTITION
+if [ $SCRIPT_ROOT_PARTITION_DEVICE_TYPE == ssd ] ; then
+  mkfs.btrfs -m single -d single $ROOT_PARTITION
+else
+  mkfs.btrfs -m dup -d single $ROOT_PARTITION
+fi
 mount $ROOT_PARTITION /mnt
 btrfs subvolume create /mnt/@
 btrfs subvolume create /mnt/@home

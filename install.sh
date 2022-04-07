@@ -49,7 +49,7 @@ if ! [ -z $REPLY ] ; then SCRIPT_GRUB_LANG=$REPLY ; fi
 
 clear
 echo "EFI partition: $EFI_PARTITION"
-echo "Root partition: ROOT_PARTITION"
+echo "Root partition: $ROOT_PARTITION"
 echo "Timezone: $SCRIPT_TIMEZONE"
 echo "Timezone: $SCRIPT_HOSTNAME"
 echo "Timezone: $SCRIPT_BOOTLOADER_ID"
@@ -79,5 +79,8 @@ genfstab -U /mnt > /mnt/etc/fstab
 
 curl -sL https://raw.githubusercontent.com/mortyr45/fulcrum-arch/master/chroot.sh >> /mnt/install.sh
 sed -ri -e "s!^SCRIPT_TIMEZONE=!SCRIPT_TIMEZONE=$SCRIPT_TIMEZONE!g" /mnt/install.sh
+sed -ri -e "s!^SCRIPT_HOSTNAME=!SCRIPT_HOSTNAME=$SCRIPT_HOSTNAME!g" /mnt/install.sh
+sed -ri -e "s!^SCRIPT_BOOTLOADER_ID=!SCRIPT_BOOTLOADER_ID=$SCRIPT_BOOTLOADER_ID!g" /mnt/install.sh
+sed -ri -e "s!^SCRIPT_GRUB_LANG=!SCRIPT_GRUB_LANG=$SCRIPT_GRUB_LANG!g" /mnt/install.sh
 chmod +x /mnt/install.sh
 arch-chroot /mnt ./install.sh

@@ -13,7 +13,7 @@ for FILE in ${INSTALL_FILES[@]} ; do
 done
 
 timedatectl set-ntp true
-pacstrap /mnt base linux linux-firmware linux-headers btrfs-progs nano grub efibootmgr os-prober
+pacstrap /mnt base btrfs-progs nano grub efibootmgr os-prober
 genfstab -U /mnt > /mnt/etc/fstab
 
 CHROOT_INSTALL_FILES=("base" "kernel")

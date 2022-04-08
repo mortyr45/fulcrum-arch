@@ -17,18 +17,18 @@ while true ; do
   read;
   ! [ -z $REPLY ] && SCRIPT_ROOT_PARTITION=$REPLY
   
-  SCRIPT_ROOT_PARTITION_SSD=false
-  echo -n "Is the root partition on an ssd?[y/N]"
+  SCRIPT_ROOT_PARTITION_SSD=true
+  echo -n "Is the root partition on an ssd?[Y/n]"
   read;
-  [ $REPLY == "y" ] && SCRIPT_ROOT_PARTITION_SSD=true
+  [ $REPLY == "n" ] && SCRIPT_ROOT_PARTITION_SSD=false
 
-  SCRIPT_TIMEZONE_REGION=Europe
+  SCRIPT_TIMEZONE_REGION=Asia
   ls /usr/share/zoneinfo
   echo -n "Time zone region[$SCRIPT_TIMEZONE_REGION]:"
   read;
   ! [ -z $REPLY ] && SCRIPT_TIMEZONE_REGION=$REPLY
 
-  SCRIPT_TIMEZONE_CITY=Budapest
+  SCRIPT_TIMEZONE_CITY=Tokyo
   ls /usr/share/zoneinfo/$SCRIPT_TIMEZONE_REGION
   echo -n "Time zone region[$SCRIPT_TIMEZONE_CITY]:"
   read;

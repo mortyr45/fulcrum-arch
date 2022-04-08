@@ -13,7 +13,14 @@ source install-partitions.sh
 [ $? != 0 ] && exit 1
 
 timedatectl set-ntp true
-#SCRIPT_CPU_MITIGATIONS
+case $SCRIPT_CPU_MITIGATIONS in
+  0)
+    SCRIPT_CPU_MITIGATIONS=" linux-lts linux-lts-headers" ;;
+  1)
+    SCRIPT_CPU_MITIGATIONS=" linux linux-headers" ;;
+  2)
+    SCRIPT_CPU_MITIGATIONS=" linux-hardened linux-hardened-headers" ;;
+esac
 pacstrap /mnt base btrfs-progs nano grub efibootmgr os-prober
 genfstab -U /mnt > /mnt/etc/fstab
 

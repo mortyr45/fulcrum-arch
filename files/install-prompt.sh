@@ -62,7 +62,7 @@ while true ; do
   read;
   ! [ -z $REPLY ] && SCRIPT_KERNEL=$REPLY
   
-  SCRIPT_CPU_MITIGATIONS=""
+  SCRIPT_CPU_MITIGATIONS="0"
   printf "Whicch cpu microcode package would you like to install?\n0) none\n1) amd-ucode\n2) intel-ucode"
   echo -n "Please choose cpu microcode mitigation to be installed[$SCRIPT_CPU_MITIGATIONS]: "
   read;

@@ -70,7 +70,7 @@ while true ; do
   echo "Hostname: $SCRIPT_HOSTNAME"
   echo "Bootloader ID: $SCRIPT_BOOTLOADER_ID"
   echo "Grub language: $SCRIPT_GRUB_LANG"
-  echo -n "Are the settings correct?[y/n]"
+  echo -n "Are the settings correct?[y/N]"
   read;
   [ $REPLY == "y" ] && break
 done

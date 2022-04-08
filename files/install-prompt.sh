@@ -61,6 +61,12 @@ while true ; do
   echo -n "Choose multiple of them, by separating the numbers with a ','[$SCRIPT_KERNEL]: "
   read;
   ! [ -z $REPLY ] && SCRIPT_GRUB_LANG=$REPLY
+  
+  SCRIPT_CPU_MITIGATIONS=""
+  printf "Whicch cpu microcode package would you like to install?\n0) none\n1) amd-ucode\n2) intel-ucode"
+  echo -n "Please choose cpu microcode mitigation to be installed[$SCRIPT_CPU_MITIGATIONS]: "
+  read;
+  ! [ -z $REPLY ] && SCRIPT_CPU_MITIGATIONS=$REPLY
 
   echo "EFI partition: $SCRIPT_EFI_PARTITION"
   echo "Root partition: $SCRIPT_ROOT_PARTITION"
@@ -70,6 +76,7 @@ while true ; do
   echo "Bootloader ID: $SCRIPT_BOOTLOADER_ID"
   echo "Grub language: $SCRIPT_GRUB_LANG"
   echo "Chosen kernel(s): $SCRIPT_KERNEL"
+  echo "Chosen cpu microcode mitigation: $SCRIPT_CPU_MITIGATIONS"
   echo -n "Are the settings correct?[y/N]"
   read;
   [ $REPLY == "y" ] && break

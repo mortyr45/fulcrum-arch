@@ -60,7 +60,7 @@ while true ; do
   printf "Which kernel(s) would you like to install?\n1) linux-lts\n2) linux\n3) linux-hardened\n4) linux-zen\n"
   echo -n "Choose multiple of them, by separating the numbers with a ','[$SCRIPT_KERNEL]: "
   read;
-  ! [ -z $REPLY ] && SCRIPT_GRUB_LANG=$REPLY
+  ! [ -z $REPLY ] && SCRIPT_KERNEL=$REPLY
   
   SCRIPT_CPU_MITIGATIONS=""
   printf "Whicch cpu microcode package would you like to install?\n0) none\n1) amd-ucode\n2) intel-ucode"

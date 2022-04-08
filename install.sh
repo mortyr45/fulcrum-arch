@@ -1,20 +1,15 @@
 #!/bin/bash
 
-INSTALL_FILES=("prompt" "partitions" "bootstrap" "kernel" "finish")
+! [ -f "install-finish.sh" ] && curl -sL https://raw.githubusercontent.com/mortyr45/fulcrum-arch/master/files/install-finish.sh > install-finish.sh
 
+INSTALL_FILES=("prompt" "partitions" "bootstrap" "kernel")
 for FILE in ${INSTALL_FILES[@]} ; do
   ! [ -f "install-$FILE.sh" ] && curl -sL https://raw.githubusercontent.com/mortyr45/fulcrum-arch/master/files/install-$FILE.sh > install-$FILE.sh
+done
+for FILE in ${INSTALL_FILES[@]} ; do
+  source $FILE.sh
   [ $? != 0 ] && exit 1
 done
-
-source install-prompt.sh
-[ $? != 0 ] && exit 1
-source install-partitions.sh
-[ $? != 0 ] && exit 1
-source install-bootstrap.sh
-[ $? != 0 ] && exit 1
-source install-kernel.sh
-[ $? != 0 ] && exit 1
 
 CHROOT_INSTALL_FILES=("base")
 for FILE in ${CHROOT_INSTALL_FILES[@]} ; do

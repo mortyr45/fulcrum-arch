@@ -18,9 +18,9 @@ while true ; do
   ! [ -z $REPLY ] && SCRIPT_ROOT_PARTITION=$REPLY
   
   SCRIPT_ROOT_PARTITION_SSD=true
-  echo -n "Is the root partition on an ssd?[Y/n]"
+  echo -n "Is the root partition on an ssd?[Y/n]:"
   read;
-  [ ! [ -z $REPLY ] && $REPLY == "n" ] && SCRIPT_ROOT_PARTITION_SSD=false
+  [ $REPLY == "n" ] && SCRIPT_ROOT_PARTITION_SSD=false
 
   SCRIPT_TIMEZONE_REGION=Asia
   ls /usr/share/zoneinfo

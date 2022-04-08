@@ -7,7 +7,7 @@ for FILE in ${INSTALL_FILES[@]} ; do
   ! [ -f "install-$FILE.sh" ] && curl -sL https://raw.githubusercontent.com/mortyr45/fulcrum-arch/master/files/install-$FILE.sh > install-$FILE.sh
 done
 for FILE in ${INSTALL_FILES[@]} ; do
-  source $FILE.sh
+  source install-$FILE.sh
   [ $? != 0 ] && exit 1
 done
 

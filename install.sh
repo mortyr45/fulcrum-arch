@@ -1,6 +1,6 @@
 #!/bin/bash
 
-INSTALL_FILES=("prompt" "partitions" "kernel" "finish")
+INSTALL_FILES=("prompt" "partitions" "bootstrap" "kernel" "finish")
 
 for FILE in ${INSTALL_FILES[@]} ; do
   ! [ -f "install-$FILE.sh" ] && curl -sL https://raw.githubusercontent.com/mortyr45/fulcrum-arch/master/files/install-$FILE.sh > install-$FILE.sh
@@ -11,20 +11,10 @@ source install-prompt.sh
 [ $? != 0 ] && exit 1
 source install-partitions.sh
 [ $? != 0 ] && exit 1
-
-timedatectl set-ntp true
-case $SCRIPT_CPU_MITIGATIONS in
-  0)
-    SCRIPT_CPU_MITIGATIONS="" ;;
-  1)
-    SCRIPT_CPU_MITIGATIONS=" amd-ucode" ;;
-  2)
-    SCRIPT_CPU_MITIGATIONS=" intel-ucode" ;;
-esac
-pacstrap /mnt base btrfs-progs nano grub efibootmgr os-prober $SCRIPT_CPU_MITIGATIONS
-genfstab -U /mnt > /mnt/etc/fstab
-
+source install-bootstrap.sh
+[ $? != 0 ] && exit 1
 source install-kernel.sh
+[ $? != 0 ] && exit 1
 
 CHROOT_INSTALL_FILES=("base")
 for FILE in ${CHROOT_INSTALL_FILES[@]} ; do

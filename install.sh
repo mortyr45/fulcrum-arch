@@ -13,6 +13,7 @@ source install-partitions.sh
 [ $? != 0 ] && exit 1
 
 timedatectl set-ntp true
+#SCRIPT_CPU_MITIGATIONS
 pacstrap /mnt base btrfs-progs nano grub efibootmgr os-prober
 genfstab -U /mnt > /mnt/etc/fstab
 

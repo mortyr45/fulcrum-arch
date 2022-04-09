@@ -19,9 +19,14 @@ done
 SCRIPT_USERNAME=$REPLY
 
 while true ; do
-  read -sp "Password: "
-  ! [ -z $REPLY ] && break
+  while true ; do
+    read -sp "Password: "
+    ! [ -z $REPLY ] && break
+  done
+  SCRIPT_PASSWORD=$REPLY
+  read -sp "Re-enter password: "
+  [ $SCRIPT_PASSWORD == $REPLY ] && break
 done
-SCRIPT_PASSWORD=$REPLY
 
-echo "$SCRIPT_USERNAME:$SCRIPT_PASSWORD"
+useradd -m -G wheel $SCRIPT_USERNAME
+echo $SCRIPT_USERNAME:$SCRIPT_PASSWORD | chpasswd

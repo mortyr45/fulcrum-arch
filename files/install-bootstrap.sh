@@ -29,4 +29,4 @@ while true ; do
 done
 
 arch-chroot /mnt useradd -m -G wheel $SCRIPT_USERNAME
-arch-chroot /mnt echo $SCRIPT_USERNAME:$SCRIPT_PASSWORD | chpasswd
+echo $SCRIPT_USERNAME:$SCRIPT_PASSWORD | arch-chroot /mnt chpasswd

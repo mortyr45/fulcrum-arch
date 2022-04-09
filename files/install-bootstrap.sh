@@ -28,5 +28,5 @@ while true ; do
   [ $SCRIPT_PASSWORD == $REPLY ] && break
 done
 
-useradd -m -G wheel $SCRIPT_USERNAME
-echo $SCRIPT_USERNAME:$SCRIPT_PASSWORD | chpasswd
+arch-chroot /mnt useradd -m -G wheel $SCRIPT_USERNAME
+arch-chroot /mnt echo $SCRIPT_USERNAME:$SCRIPT_PASSWORD | chpasswd

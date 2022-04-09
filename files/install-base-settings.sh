@@ -1,5 +1,7 @@
 #!/bin/bash
 
+sed -ri -e "s!^# %wheel ALL=(ALL:ALL) ALL!%wheel ALL=(ALL:ALL) ALL!g" /mnt/etc/sudoers
+
 while true ; do
   read -p "Username: "
   ! [ -z $REPLY ] && break

@@ -14,13 +14,13 @@ genfstab -U /mnt > /mnt/etc/fstab
 
 while true ; do
   read -p "Username:
-  ! [ -z $REPLY ] break
+  ! [ -z $REPLY ] && break
 done
 SCRIPT_USERNAME=$REPLY
 
 while true ; do
   read -sp "Password:"
-  ! [ -z $REPLY ] break
+  ! [ -z $REPLY ] && break
 done
 SCRIPT_PASSWORD=$REPLY
 

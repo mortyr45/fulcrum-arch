@@ -13,13 +13,13 @@ pacstrap /mnt base btrfs-progs nano grub efibootmgr os-prober sudo $SCRIPT_CPU_M
 genfstab -U /mnt > /mnt/etc/fstab
 
 while true ; do
-  read -p "Username:
+  read -p "Username: "
   ! [ -z $REPLY ] && break
 done
 SCRIPT_USERNAME=$REPLY
 
 while true ; do
-  read -sp "Password:"
+  read -sp "Password: "
   ! [ -z $REPLY ] && break
 done
 SCRIPT_PASSWORD=$REPLY

@@ -35,5 +35,8 @@ EOF
 # Performance
 systemctl enable systemd-oomd
 
+# Other
+pacman -S fwupd
+
 #in /etc/pacman.d/mirrorlist set the desired mirror
 #pacman -Syyu

@@ -15,4 +15,3 @@ genfstab -U /mnt > /mnt/etc/fstab
 arch-chroot /mnt sed -ri -e "s/^GRUB_DEFAULT=.*/GRUB_DEFAULT=saved/g" /etc/default/grub
 arch-chroot /mnt sed -ri -e "s/^GRUB_TIMEOUT=.*/GRUB_TIMEOUT=3/g" /etc/default/grub
 arch-chroot /mnt sed -ri -e "s/^GRUB_TIMEOUT_STYLE=.*/GRUB_TIMEOUT_STYLE=menu/g" /etc/default/grub
-arch-chroot /mnt sed -ri -e "s/^#GRUB_SAVEDEFAULT=.*/GRUB_SAVEDEFAULT=true/g" /etc/default/grub

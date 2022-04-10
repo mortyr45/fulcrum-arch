@@ -23,7 +23,7 @@ arch-chroot /mnt useradd -m -G wheel $SCRIPT_USERNAME
 echo $SCRIPT_USERNAME:$SCRIPT_PASSWORD | arch-chroot /mnt chpasswd
 
 arch-chroot /mnt ln -sf /usr/share/zoneinfo/$SCRIPT_TIMEZONE /etc/localtime
-arch-chroot /mnt sed -ri -e "s!^#$SCRIPT_LOCALE*$!$SCRIPT_LOCALE" /etc/locale.gen
+arch-chroot /mnt sed -ri -e "s/^#$SCRIPT_LOCALE/$SCRIPT_LOCALE/g" /etc/locale.gen
 arch-chroot /mnt locale-gen
 echo "$SCRIPT_HOSTNAME" > /mnt/etc/hostname
 arch-chroot /mnt grub-install --target=x86_64-efi --bootloader-id=$SCRIPT_BOOTLOADER_ID

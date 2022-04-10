@@ -1,6 +1,7 @@
 #!/bin/bash
 
-arch-chroot /mnt sed -ri -e "s!^.*%wheel ALL=(ALL:ALL) ALL!%wheel ALL=(ALL:ALL) ALL!g" /etc/sudoers
+#arch-chroot /mnt sed -ri -e "s!^.*%wheel ALL=(ALL:ALL) ALL!%wheel ALL=(ALL:ALL) ALL!g" /etc/sudoers
+echo "whell ALL=(ALL:ALL) ALL" > /mnt/etc/sudoers.d/00-wheel
 
 while true ; do
   read -p "Username: "

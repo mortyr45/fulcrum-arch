@@ -14,4 +14,4 @@ ufw allow from 192.168.0.0/23
 ufw limit 22/tcp
 
 # Packages
-
+sed -ri -e "s!#*ParallelDownloads!ParallelDownloads\ =\ 5!g" /etc/pacman.conf

@@ -17,6 +17,7 @@ ufw limit 22/tcp
 # Packages
 sed -ri -e "s/^.*ParallelDownloads.*/ParallelDownloads\ =\ 5/g" /etc/pacman.conf
 #pacman -S pacman-contrib
+mkdir -p /etc/pacman.d/hooks
 cat > /etc/pacman.d/hooks/remove_old_cache.hook<< EOF
 [Trigger]
 Operation = Upgrade

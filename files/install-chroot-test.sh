@@ -15,3 +15,17 @@ ufw limit 22/tcp
 
 # Packages
 sed -ri -e "s!#*ParallelDownloads!ParallelDownloads\ =\ 5!g" /etc/pacman.conf
+#pacman -S pacman-contrib
+cat > /etc/pacman.d/hooks/remove_old_cache.hook<< EOF
+[Trigger]
+Operation = Upgrade
+Operation = Install
+Operation = Remove
+Type = Package
+Target = *
+
+[Action]
+Description = Cleaning pacman cache...
+When = PostTransaction
+Exec = /usr/bin/paccache -rk3
+EOF

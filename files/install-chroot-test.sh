@@ -2,6 +2,7 @@
 
 # Security
 echo "Defaults editor=/usr/bin/rnano" >> /etc/sudoers
+sed -ri -e "s/^#.*%wheel ALL=\(ALL:ALL\) ALL/%wheel ALL=(ALL:ALL) ALL/g" /etc/sudoers
 passwd --lock root
 
 pacman -S ufw

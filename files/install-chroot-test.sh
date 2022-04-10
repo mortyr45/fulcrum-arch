@@ -29,3 +29,6 @@ Description = Cleaning pacman cache...
 When = PostTransaction
 Exec = /usr/bin/paccache -rk3
 EOF
+
+#in /etc/pacman.d/mirrorlist set the desired mirror
+#pacman -Syyu

@@ -32,5 +32,8 @@ When = PostTransaction
 Exec = /usr/bin/paccache -rk3
 EOF
 
+# Performance
+systemctl enable systemd-oomd
+
 #in /etc/pacman.d/mirrorlist set the desired mirror
 #pacman -Syyu

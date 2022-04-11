@@ -37,6 +37,8 @@ systemctl enable systemd-oomd
 
 # Other
 pacman --noconfirm -S fwupd zsh cronie openssh man-db man-pages gufw
+sed -ri -e "s/^.*PermitRootLogin.*/PermitRootLogin\ prohibit-password/g" /etc/ssh/sshd_config
+sed -ri -e "s/^.*PasswordAuthentication.*/PasswordAuthentication\ no/g" /etc/ssh/sshd_config
 systemctl enable sshd
 systemctl enable cronie
 chsh -s /bin/zsh fulcrum

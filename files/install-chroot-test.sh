@@ -36,7 +36,9 @@ flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.f
 systemctl enable systemd-oomd
 
 # Other
-pacman --noconfirm -S fwupd zsh man-db man-pages gufw
+pacman --noconfirm -S fwupd zsh cronie openssh man-db man-pages gufw
+systemctl enable openssh
+systemctl enable cronie
 chsh -s /bin/zsh fulcrum
 
 #in /etc/pacman.d/mirrorlist set the desired mirror

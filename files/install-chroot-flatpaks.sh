@@ -3,7 +3,7 @@
 flatpak install \
 com.github.tchx84.Flatseal \
 de.haeckerfelix.Shortwave \
-dev.geopjr.Hashbrown \
+dev.geopjr.Collision \
 org.gnome.Evince \
 org.gnome.gedit \
 org.gnome.Calculator \

@@ -1,7 +1,8 @@
 #!/bin/bash
 
-#arch-chroot /mnt sed -ri -e "s!^.*%wheel ALL=(ALL:ALL) ALL!%wheel ALL=(ALL:ALL) ALL!g" /etc/sudoers
-echo "wheel ALL=(ALL:ALL) ALL" > /mnt/etc/sudoers.d/00-wheel
+echo "Defaults editor=/usr/bin/rnano" >> /etc/sudoers
+sed -ri -e "s/^#.*%wheel ALL=\(ALL:ALL\) ALL/%wheel ALL=(ALL:ALL) ALL/g" /etc/sudoers
+passwd --lock root
 
 while true ; do
   read -p "Username: "

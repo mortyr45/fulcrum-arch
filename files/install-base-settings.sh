@@ -29,5 +29,5 @@ echo "$SCRIPT_HOSTNAME" > /mnt/etc/hostname
 arch-chroot /mnt grub-install --target=x86_64-efi --bootloader-id=$SCRIPT_BOOTLOADER_ID
 arch-chroot /mnt cp /usr/share/locale/$SCRIPT_GRUB_LANG\@quot/LC_MESSAGES/grub.mo /boot/grub/locale/$SCRIPT_GRUB_LANG.mo
 
-arch-chroot /mnt pacman -S networkmanager
+arch-chroot /mnt pacman --noconfirm -S networkmanager
 arch-chroot /mnt systemctl enable NetworkManager

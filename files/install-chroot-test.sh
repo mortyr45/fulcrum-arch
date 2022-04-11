@@ -35,6 +35,7 @@ EOF
 
 pacman --noconfirm -S flatpak
 flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+flatpak install com.github.tchx84.Flatseal
 
 # Performance
 systemctl enable systemd-oomd

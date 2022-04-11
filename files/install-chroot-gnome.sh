@@ -1,4 +1,4 @@
 #!/bin/bash
 
-pacman -S gnome
+pacman --noconfirm -S gnome
 systemctl enable gdm

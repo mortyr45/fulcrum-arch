@@ -2,7 +2,6 @@
 
 pacman -S \
 alacritty \
-file-roller \
 gdm \
 gnome-backgrounds \
 gnome-color-manager \

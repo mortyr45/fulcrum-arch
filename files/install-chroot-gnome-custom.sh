@@ -12,7 +12,6 @@ gnome-screenshot \
 gnome-session \
 gnome-settings-daemon \
 gnome-shell \
-gnome-shell-extensions \
 gnome-tweaks \
 grilo-plugins \
 gvfs \

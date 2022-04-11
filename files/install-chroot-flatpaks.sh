@@ -1,6 +1,6 @@
 #!/bin/bash
 
-flatpak install \
+flatpak install --noninteractive \
 com.github.tchx84.Flatseal \
 de.haeckerfelix.Shortwave \
 dev.geopjr.Collision \

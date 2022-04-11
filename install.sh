@@ -11,12 +11,11 @@ for FILE in ${INSTALL_FILES[@]} ; do
   [ $? != 0 ] && exit 1
 done
 
-mkdir /mnt/install_scripts
 CHROOT_INSTALL_FILES=("gnome" "gnome-custom" "flatpaks" "test")
 for FILE in ${CHROOT_INSTALL_FILES[@]} ; do
-  ! [ -f "install-$FILE.sh" ] && curl -sL https://raw.githubusercontent.com/mortyr45/fulcrum-arch/master/files/install-chroot-$FILE.sh > /mnt/install_scripts/$FILE.sh
+  ! [ -f "install-$FILE.sh" ] && curl -sL https://raw.githubusercontent.com/mortyr45/fulcrum-arch/master/files/install-chroot-$FILE.sh > /mnt/root/farch-$FILE.sh
   [ $? != 0 ] && exit 1
-  chmod +x /mnt/install_scripts/$FILE.sh
+  chmod +x /mnt/root/farch-$FILE.sh
 done
 
 arch-chroot /mnt

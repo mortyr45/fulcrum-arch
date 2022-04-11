@@ -37,7 +37,7 @@ systemctl enable systemd-oomd
 
 # Other
 pacman --noconfirm -S fwupd zsh cronie openssh man-db man-pages gufw
-systemctl enable openssh
+systemctl enable sshd
 systemctl enable cronie
 chsh -s /bin/zsh fulcrum
 

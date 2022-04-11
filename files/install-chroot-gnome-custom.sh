@@ -1,4 +1,4 @@
 #!/bin/bash
 
-pacman -S gdm gnome-shell gnome-backgrounds gnome-calculator gnome-calendar gnome-characters gnome-clocks
+pacman -S gdm gnome-shell gnome-backgrounds gnome-calculator gnome-calendar gnome-characters gnome-clocks gnome-terminal
 systemctl enable gdm

@@ -6,18 +6,6 @@ while true ; do
   EFI_INSTALL=0
   ls /sys/firmware/efi/efivars > /dev/null
   [ $? == 0 ] && EFI_INSTALL=1
-  
-  SCRIPT_EFI_PARTITION=/dev/sda1
-  read -p "Device and partition number for EFI [$SCRIPT_EFI_PARTITION]: "
-  ! [ -z $REPLY ] && SCRIPT_EFI_PARTITION=$REPLY
-
-  SCRIPT_ROOT_PARTITION=/dev/sda2
-  read -p "Device and partition number for root [$SCRIPT_ROOT_PARTITION]: "
-  ! [ -z $REPLY ] && SCRIPT_ROOT_PARTITION=$REPLY
-  
-  SCRIPT_ROOT_PARTITION_SSD=true
-  read -p "Is the root partition on an ssd? [Y/n]: "
-  [ "$REPLY" == "n" ] && SCRIPT_ROOT_PARTITION_SSD=false
 
   SCRIPT_TIMEZONE_REGION=Asia
   ls /usr/share/zoneinfo
@@ -58,8 +46,6 @@ while true ; do
   ! [ -z $REPLY ] && SCRIPT_CPU_MITIGATIONS=$REPLY
 
   clear
-  echo "EFI partition: $SCRIPT_EFI_PARTITION"
-  echo "Root partition: $SCRIPT_ROOT_PARTITION"
   echo "Timezone: $SCRIPT_TIMEZONE"
   echo "Locale: $SCRIPT_LOCALE"
   echo "Hostname: $SCRIPT_HOSTNAME"

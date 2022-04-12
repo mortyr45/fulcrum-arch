@@ -13,6 +13,10 @@ ufw enable
 
 # Packages
 sed -ri -e "s/^.*ParallelDownloads.*/ParallelDownloads\ =\ 5/g" /etc/pacman.conf
+sed -ri -e "s/^.*\[multilib\].*/\[multilib\]/g" /etc/pacman.conf
+sed -ri -e "s/^.*\[multilib\].*/&\nInclude\ =\ \/etc\/pacman.d\/mirrorlist/" /etc/pacman.conf
+sed -ri -e "s/^.*\[multilib\].*/&\nSigLevel\ =\ PackageRequired/" /etc/pacman.conf
+
 pacman --noconfirm -S pacman-contrib
 mkdir -p /etc/pacman.d/hooks
 cat > /etc/pacman.d/hooks/remove_old_cache.hook<< EOF

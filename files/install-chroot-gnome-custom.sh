@@ -24,6 +24,8 @@ gvfs-mtp \
 gvfs-nfs \
 gvfs-smb \
 jack2 \
+libnautilus-extension \
+libva \
 mutter \
 nautilus \
 noto-fonts \

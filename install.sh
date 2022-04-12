@@ -11,7 +11,7 @@ for FILE in ${INSTALL_FILES[@]} ; do
   [ $? != 0 ] && exit 1
 done
 
-CHROOT_INSTALL_FILES=("gnome" "gnome-custom" "flatpaks" "test")
+CHROOT_INSTALL_FILES=("gnome" "gnome-custom" "flatpaks" "katsuo-repo" "chaotic-aur" "test")
 for FILE in ${CHROOT_INSTALL_FILES[@]} ; do
   ! [ -f "install-$FILE.sh" ] && curl -sL https://raw.githubusercontent.com/mortyr45/fulcrum-arch/master/files/install-chroot-$FILE.sh > /mnt/root/farch-$FILE.sh
   [ $? != 0 ] && exit 1

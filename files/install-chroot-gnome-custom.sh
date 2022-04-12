@@ -1,6 +1,6 @@
 #!/bin/bash
 
-pacman -S \
+pacman --noconfirm -S \
 alacritty \
 ffmpeg \
 gdm \
@@ -8,6 +8,7 @@ gnome-backgrounds \
 gnome-color-manager \
 gnome-control-center \
 gnome-disk-utility \
+gnome-extensions \
 gnome-keyring \
 gnome-screenshot \
 gnome-session \

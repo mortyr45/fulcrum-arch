@@ -2,6 +2,7 @@
 
 pacman -S \
 alacritty \
+ffmpeg \
 gdm \
 gnome-backgrounds \
 gnome-color-manager \

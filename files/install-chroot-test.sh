@@ -15,7 +15,6 @@ ufw enable
 sed -ri -e "s/^.*ParallelDownloads.*/ParallelDownloads\ =\ 5/g" /etc/pacman.conf
 sed -ri -e "s/^.*\[multilib\].*/\[multilib\]/g" /etc/pacman.conf
 sed -ri -e "s/^.*\[multilib\].*/&\nInclude\ =\ \/etc\/pacman.d\/mirrorlist/" /etc/pacman.conf
-sed -ri -e "s/^.*\[multilib\].*/&\nSigLevel\ =\ PackageRequired/" /etc/pacman.conf
 pacman -Sy
 
 pacman --noconfirm -S pacman-contrib

@@ -12,6 +12,8 @@ for KERNEL in $SCRIPT_KERNEL ; do
     TEMP+=" linux-hardened linux-hardened-headers" ;;
   4)
     TEMP+=" linux-zen linux-zen-headers" ;;
+  0)
+    TEMP+="" ;;
   esac
 done
 IFS=" "

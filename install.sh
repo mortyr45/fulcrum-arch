@@ -1,8 +1,6 @@
 #!/bin/bash
 
-! [ -f "install-finish.sh" ] && curl -sL https://raw.githubusercontent.com/mortyr45/fulcrum-arch/master/files/install-finish.sh > install-finish.sh
-
-INSTALL_FILES=("prompt" "bootstrap" "kernel" "base-settings")
+INSTALL_FILES=("prompt" "bootstrap" "kernel" "base-settings" "finish")
 for FILE in ${INSTALL_FILES[@]} ; do
   ! [ -f "install-$FILE.sh" ] && curl -sL https://raw.githubusercontent.com/mortyr45/fulcrum-arch/master/files/installer/$FILE.sh > install-$FILE.sh
 done

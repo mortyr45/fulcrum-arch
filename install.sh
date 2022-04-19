@@ -153,7 +153,7 @@ for FILE in ${CHROOT_INSTALL_FILES[@]} ; do
 	chmod +x /mnt/root/fulos-$FILE.sh
 done
 
+arch-chroot /mnt
+
 arch-chroot /mnt mkinitcpio -P
 arch-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg
-
-reboot

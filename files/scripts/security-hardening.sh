@@ -9,7 +9,7 @@ systemctl disable iptables
 ufw default deny incoming
 ufw default deny forward
 ufw default allow outgoing
-ufw limit 22/tcp from 192.168.0.0/23
+sudo ufw allow from 203.0.113.0/24 proto tcp to any port 22
 systemctl enable ufw
 ufw enable
 

@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# Performance
-systemctl enable systemd-oomd
-
 # Other
 pacman --noconfirm -S zsh cronie openssh man-db man-pages gufw
 systemctl enable sshd

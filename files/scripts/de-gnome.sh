@@ -9,7 +9,6 @@ gnome_bare() {
     gnome-color-manager \
     gnome-control-center \
     gnome-disk-utility \
-    gnome-extensions \
     gnome-keyring \
     gnome-screenshot \
     gnome-session \

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Other
-pacman --noconfirm -S zsh openssh man-db man-pages gufw
+pacman --noconfirm -S zsh openssh gufw
 systemctl enable sshd
 chsh -s /bin/zsh fulcrum
 sed -ri -e "s/^.*set\ softwrap.*/set\ softwrap/g" /etc/nanorc

@@ -6,6 +6,9 @@ if [ $? != 0 ] ; then
     flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 fi
 
+pacman -Q fwupd
+[ $? != 0 ] && pacman --noconfirm -S fwupd
+
 flatpak install --noninteractive \
 com.github.tchx84.Flatseal \
 de.haeckerfelix.Shortwave \

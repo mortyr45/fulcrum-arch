@@ -5,19 +5,19 @@ arch-chroot /mnt sed -ri -e "s/^#.*%wheel ALL=\(ALL:ALL\) ALL/%wheel ALL=(ALL:AL
 arch-chroot /mnt passwd --lock root
 
 while true ; do
-  read -p "Username: "
-  ! [ -z $REPLY ] && break
+	read -p "Username: "
+	! [ -z $REPLY ] && break
 done
 SCRIPT_USERNAME=$REPLY
 
 while true ; do
-  while true ; do
-    read -sp "Password: "
-    ! [ -z $REPLY ] && break
-  done
-  SCRIPT_PASSWORD=$REPLY
-  read -sp "Re-enter password: "
-  [ $SCRIPT_PASSWORD == $REPLY ] && break
+	while true ; do
+		read -sp "Password: "
+		! [ -z $REPLY ] && break
+	done
+	SCRIPT_PASSWORD=$REPLY
+	read -sp "Re-enter password: "
+	[ $SCRIPT_PASSWORD == $REPLY ] && break
 done
 
 arch-chroot /mnt useradd -m -G wheel $SCRIPT_USERNAME

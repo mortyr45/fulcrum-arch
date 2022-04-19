@@ -33,9 +33,6 @@ When = PostTransaction
 Exec = /usr/bin/paccache -rk3
 EOF
 
-pacman --noconfirm -S flatpak
-flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
-
 # Performance
 systemctl enable systemd-oomd
 

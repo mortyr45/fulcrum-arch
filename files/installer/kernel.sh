@@ -1,7 +1,6 @@
 #!/bin/bash
 
 TEMP=""
-IFS=","
 for KERNEL in $SCRIPT_KERNEL ; do
 	case $KERNEL in
 	1)
@@ -16,6 +15,5 @@ for KERNEL in $SCRIPT_KERNEL ; do
 		TEMP+="" ;;
 	esac
 done
-IFS=" "
   
 arch-chroot /mnt pacman --noconfirm -S $TEMP linux-firmware

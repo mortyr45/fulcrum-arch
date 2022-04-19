@@ -31,8 +31,7 @@ gnome_bare() {
 	nautilus \
 	noto-fonts \
 	noto-fonts-emoji \
-	pipewire-media-session \
-	power-profiles-daemon
+	pipewire-media-session
 }
 
 printf "1) Regular GNOME desktop install\n2) GNOME desktop with extras package\n3) Bare GNOME desktop install\n"

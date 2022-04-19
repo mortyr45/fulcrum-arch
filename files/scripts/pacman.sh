@@ -23,11 +23,13 @@ sed -ri -e "s/^.*ParallelDownloads.*/ParallelDownloads\ =\ $REPLY/g" /etc/pacman
 sed -ri -e "s/^.*\[multilib\].*/\[multilib\]/g" /etc/pacman.conf
 sed -ri -e "s/^.*\[multilib\].*/&\nInclude\ =\ \/etc\/pacman.d\/mirrorlist/" /etc/pacman.conf
 
+pacman -Syy
+
 read -p "Enable katsuo pacman repository? [y/N]: "
-[ $REPLY == "y" ] && katsuo_repo
+[ "$REPLY" == "y" ] && katsuo_repo
 
 read -p "Enable chaotic aur? [y/N]: "
-[ $REPLY == "y" ] && chaotic_aur
+[ "$REPLY" == "y" ] && chaotic_aur
 
 pacman -Q pacman-contrib
 [ $? != 0 ] && pacman --noconfirm -S pacman-contrib

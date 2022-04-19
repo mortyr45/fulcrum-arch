@@ -31,6 +31,7 @@ mutter \
 nautilus \
 noto-fonts \
 noto-fonts-emoji \
-pipewire-media-session
+pipewire-media-session \
+power-profiles-daemon
 
 systemctl enable gdm

@@ -9,7 +9,7 @@ for FILE in ${INSTALL_FILES[@]} ; do
   [ $? != 0 ] && exit 1
 done
 
-CHROOT_INSTALL_FILES=("de-gnome" "gnome-bare" "flatpaks" "katsuo-repo" "chaotic-aur" "test")
+CHROOT_INSTALL_FILES=("de-gnome" "flatpaks" "katsuo-repo" "chaotic-aur" "test")
 for FILE in ${CHROOT_INSTALL_FILES[@]} ; do
   ! [ -f "install-$FILE.sh" ] && curl -sL https://raw.githubusercontent.com/mortyr45/fulcrum-arch/master/files/scripts/$FILE.sh > /mnt/root/fulos-$FILE.sh
   [ $? != 0 ] && exit 1

@@ -40,7 +40,7 @@ prompts() {
 	! [ -z $REPLY ] && SCRIPT_GRUB_LANG=$REPLY
 
 	read -p "Would you like to install os-prober? [y/N]: "
-	[ ! [ -z $REPLY ] && $REPLY == "y" ] && SCRIPT_OS_PROBER="os-prober"
+	[ "$REPLY" == "y" ] && SCRIPT_OS_PROBER="os-prober"
 	
 	SCRIPT_KERNEL="1"
 	printf "Which kernel(s) would you like to install?\n1) linux-lts\n2) linux\n3) linux-hardened\n4) linux-zen\n0) without kernel\n"

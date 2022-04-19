@@ -43,7 +43,7 @@ sed -ri -e "s/^.*PasswordAuthentication.*/PasswordAuthentication\ no/g" /etc/ssh
 systemctl enable sshd
 systemctl enable cronie
 chsh -s /bin/zsh fulcrum
-sed -ri -e "s/^.*set\ softwrap.*/set\ softwrap/g" /etc/ssh/sshd_config
+sed -ri -e "s/^.*set\ softwrap.*/set\ softwrap/g" /etc/nanorc
 
 #in /etc/pacman.d/mirrorlist set the desired mirror
 #pacman -Syyu

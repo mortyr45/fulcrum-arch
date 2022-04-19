@@ -9,7 +9,7 @@ case $SCRIPT_CPU_MITIGATIONS in
 	2)
 		SCRIPT_CPU_MITIGATIONS="intel-ucode" ;;
 esac
-pacstrap /mnt base btrfs-progs nano grub efibootmgr os-prober sudo $SCRIPT_CPU_MITIGATIONS
+pacstrap /mnt base efibootmgr grub nano networkmanager sudo $SCRIPT_CPU_MITIGATIONS
 genfstab -U /mnt > /mnt/etc/fstab
 
 arch-chroot /mnt sed -ri -e "s/^GRUB_DEFAULT=.*/GRUB_DEFAULT=saved/g" /etc/default/grub

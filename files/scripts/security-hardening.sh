@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Root account
+passwd --lock root
+
 # Firewall
 pacman --noconfirm -S ufw
 systemctl disable iptables

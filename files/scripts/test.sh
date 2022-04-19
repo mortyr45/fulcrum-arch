@@ -1,9 +1,8 @@
 #!/bin/bash
 
 # Other
-pacman --noconfirm -S zsh cronie openssh man-db man-pages gufw
+pacman --noconfirm -S zsh openssh man-db man-pages gufw
 systemctl enable sshd
-systemctl enable cronie
 chsh -s /bin/zsh fulcrum
 sed -ri -e "s/^.*set\ softwrap.*/set\ softwrap/g" /etc/nanorc
 

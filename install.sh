@@ -96,7 +96,7 @@ bootstrap() {
 		esac
 	done
 
-	pacstrap /mnt base efibootmgr grub $TEMP linux-firmware mkinitcpio nano networkmanager $SCRIPT_OS_PROBER sudo $SCRIPT_CPU_MITIGATIONS
+	pacstrap /mnt base cronie efibootmgr grub $TEMP linux-firmware mkinitcpio nano networkmanager $SCRIPT_OS_PROBER sudo $SCRIPT_CPU_MITIGATIONS
 	genfstab -U /mnt > /mnt/etc/fstab
 
 	echo "Defaults editor=/usr/bin/rnano" >> /mnt/etc/sudoers
@@ -129,6 +129,7 @@ bootstrap() {
 	arch-chroot /mnt cp /usr/share/locale/$SCRIPT_GRUB_LANG\@quot/LC_MESSAGES/grub.mo /boot/grub/locale/$SCRIPT_GRUB_LANG.mo
 
 	arch-chroot /mnt systemctl enable NetworkManager
+	arch-chroot /mnt systemctl enable cronie
 }
 
 #####

@@ -11,17 +11,9 @@ prompts() {
 	ls /sys/firmware/efi/efivars > /dev/null
 	[ $? == 0 ] && EFI_INSTALL=1
 
-	SCRIPT_TIMEZONE_REGION=Asia
-	ls /usr/share/zoneinfo
-	read -p "Time zone region [$SCRIPT_TIMEZONE_REGION]: "
-	! [ -z $REPLY ] && SCRIPT_TIMEZONE_REGION=$REPLY
-
-	SCRIPT_TIMEZONE_CITY=Tokyo
-	ls /usr/share/zoneinfo/$SCRIPT_TIMEZONE_REGION
-	read -p "Time zone region [$SCRIPT_TIMEZONE_CITY]: ";
-	! [ -z $REPLY ] && SCRIPT_TIMEZONE_CITY=$REPLY
-
-	SCRIPT_TIMEZONE="$SCRIPT_TIMEZONE_REGION/$SCRIPT_TIMEZONE_CITY"
+	SCRIPT_TIMEZONE="Asia/Tokyo"
+	read -p "Time zone [$SCRIPT_TIMEZONE]: "
+	! [ -z $REPLY ] && SCRIPT_TIMEZONE=$REPLY
 	
 	SCRIPT_LOCALE=en_US.UTF-8
 	read -p "Locale [$SCRIPT_LOCALE]: ";

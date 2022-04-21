@@ -38,6 +38,9 @@ prompts() {
 	printf "Which kernel(s) would you like to install?\n1) linux-lts\n2) linux\n3) linux-hardened\n4) linux-zen\n0) without kernel\n"
 	read -p "Choose multiple of them, by separating the numbers with a ' ' [$SCRIPT_KERNEL]: ";
 	! [ -z $REPLY ] && SCRIPT_KERNEL=$REPLY
+
+	read -p "Install dynamic kernel modules system? (dkms) [y/N]: "
+	! [ "$REPLY" == "y" ] SCRIPT_INSTALL_DKMS="y"
 	
 	SCRIPT_CPU_MITIGATIONS="0"
 	printf "Whicch cpu microcode package would you like to install?\n0) none\n1) amd-ucode\n2) intel-ucode\n"
@@ -87,6 +90,8 @@ bootstrap() {
 			TEMP+="" ;;
 		esac
 	done
+
+	[ "$SCRIPT_INSTALL_DKMS" == "y" ] && TEMP+=" dkms"
 
 	pacstrap /mnt base cronie efibootmgr grub $TEMP linux-firmware mkinitcpio nano networkmanager $SCRIPT_OS_PROBER sudo $SCRIPT_CPU_MITIGATIONS
 	genfstab -U /mnt > /mnt/etc/fstab

@@ -12,5 +12,3 @@ ntfs-3g \
 reiserfsprogs \
 udftools \
 xfsprogs
-
-# hfsprogs \

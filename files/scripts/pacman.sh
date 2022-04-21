@@ -1,5 +1,11 @@
 #!/bin/bash
 
+enable_multilib() {
+    sed -ri -e "s/^.*\[multilib\].*/\[multilib\]/g" /etc/pacman.conf
+    sed -ri -e "s/^.*\[multilib\].*/&\nInclude\ =\ \/etc\/pacman.d\/mirrorlist/" /etc/pacman.conf
+    pacman -Syy
+}
+
 katsuo_repo() {
     echo "" >> /etc/pacman.conf
     echo "[katsuo]" >> /etc/pacman.conf
@@ -18,12 +24,10 @@ chaotic_aur() {
 
 read -p "Max number of parallel downloads [5]: "
 [ -z $REPLY ] && REPLY=5
-
 sed -ri -e "s/^.*ParallelDownloads.*/ParallelDownloads\ =\ $REPLY/g" /etc/pacman.conf
-sed -ri -e "s/^.*\[multilib\].*/\[multilib\]/g" /etc/pacman.conf
-sed -ri -e "s/^.*\[multilib\].*/&\nInclude\ =\ \/etc\/pacman.d\/mirrorlist/" /etc/pacman.conf
 
-pacman -Syy
+read -p "Would you like to enable multilib (32-bit apps) [y/N]: "
+[ "$REPLY" == "y" ] && enable_multilib
 
 read -p "Enable katsuo pacman repository? [y/N]: "
 [ "$REPLY" == "y" ] && katsuo_repo

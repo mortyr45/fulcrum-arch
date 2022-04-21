@@ -34,22 +34,17 @@ gnome_bare() {
 	pipewire-media-session
 }
 
+$REPLY="1"
 printf "1) Regular GNOME desktop install\n2) GNOME desktop with extras package\n3) Bare GNOME desktop install\n"
-read -p "Choose installation type [1]: "
+read -p "Choose installation type [$REPLY]: "
 
 case $REPLY in
 	1)
-		pacman --noconfirm -S gnome
-		;;
+		pacman --noconfirm -S gnome;;
 	2)
-		pacman --noconfirm -S gnome gnome-extras
-		;;
+		pacman --noconfirm -S gnome gnome-extras;;
 	3)
-		gnome_bare
-		;;
-	*)
-		pacman --noconfirm -S gnome
-		;;
+		gnome_bare;;
 esac
 
 systemctl enable gdm

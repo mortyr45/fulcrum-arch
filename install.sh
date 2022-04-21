@@ -48,7 +48,7 @@ prompts() {
 	! [ -z $REPLY ] && SCRIPT_KERNEL=$REPLY
 	
 	SCRIPT_CPU_MITIGATIONS="0"
-	printf "Whicch cpu microcode package would you like to install?\n0) none\n1) amd-ucode\n2) intel-ucode"
+	printf "Whicch cpu microcode package would you like to install?\n0) none\n1) amd-ucode\n2) intel-ucode\n"
 	read -p "Please choose cpu microcode mitigation to be installed [$SCRIPT_CPU_MITIGATIONS]: ";
 	! [ -z $REPLY ] && SCRIPT_CPU_MITIGATIONS=$REPLY
 

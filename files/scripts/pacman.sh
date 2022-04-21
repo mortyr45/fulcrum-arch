@@ -32,7 +32,7 @@ read -p "Would you like to enable multilib (32-bit apps) [y/N]: "
 read -p "Enable katsuo pacman repository? [y/N]: "
 [ "$REPLY" == "y" ] && katsuo_repo
 
-read -p "Enable chaotic aur? [y/N]: "
+read -p "Enable chaotic aur (requires multilib)? [y/N]: "
 [ "$REPLY" == "y" ] && chaotic_aur
 
 pacman -Q pacman-contrib

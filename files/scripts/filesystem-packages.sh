@@ -3,13 +3,14 @@
 pacman --noconfirm -S \
 btrfs-progs \
 dosfstools \
-e2sprogs \
+e2fsprogs \
 exfatprogs \
-f2fs-progs \
-# hfsprogs \
+f2fs-tools \
 jfsutils \
 nilfs-utils \
 ntfs-3g \
 reiserfsprogs \
 udftools \
 xfsprogs
+
+# hfsprogs \

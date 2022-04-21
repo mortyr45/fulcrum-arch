@@ -48,13 +48,13 @@ read -p "Choose pacman configuration options [$REPLY]: "
 for CHOICE in $REPLY ; do
     case $CHOICE in
         1)
-            fn_enable_cache_hook;;
+            fn_enable_cache_hook ;;
         2)
-            fn_enable_multilib;;
+            fn_enable_multilib ;;
         3)
-            fn_katsuo_repo;;
+            fn_katsuo_repo ;;
         4)
-            fn_chaotic_aur;;
+            fn_chaotic_aur ;;
     esac
 done
 

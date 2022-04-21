@@ -40,11 +40,11 @@ read -p "Choose installation type [$REPLY]: "
 
 case $REPLY in
 	1)
-		pacman --noconfirm -S gnome;;
+		pacman --noconfirm -S gnome ;;
 	2)
-		pacman --noconfirm -S gnome gnome-extras;;
+		pacman --noconfirm -S gnome gnome-extras ;;
 	3)
-		gnome_bare;;
+		gnome_bare ;;
 esac
 
 systemctl enable gdm

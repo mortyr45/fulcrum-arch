@@ -39,6 +39,7 @@ prompts() {
 	read -p "Choose multiple of them, by separating the numbers with a ' ' [$SCRIPT_KERNEL]: ";
 	! [ -z $REPLY ] && SCRIPT_KERNEL=$REPLY
 
+	SCRIPT_INSTALL_DKMS="n"
 	read -p "Install dynamic kernel modules system? (dkms) [y/N]: "
 	[ "$REPLY" == "y" ] SCRIPT_INSTALL_DKMS="y"
 	
@@ -54,6 +55,7 @@ prompts() {
 	echo "Bootloader ID: $SCRIPT_BOOTLOADER_ID"
 	echo "Grub language: $SCRIPT_GRUB_LANG"
 	echo "Chosen kernel(s): $SCRIPT_KERNEL"
+	echo "Install dkms: $SCRIPT_INSTALL_DKMS"
 	echo "Chosen cpu microcode mitigation: $SCRIPT_CPU_MITIGATIONS"
 	echo -n "Are the settings correct? [y/N]: "
 	read;

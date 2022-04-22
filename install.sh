@@ -57,8 +57,7 @@ prompts() {
 	echo "Chosen kernel(s): $SCRIPT_KERNEL"
 	echo "Install dkms: $SCRIPT_INSTALL_DKMS"
 	echo "Chosen cpu microcode mitigation: $SCRIPT_CPU_MITIGATIONS"
-	echo -n "Are the settings correct? [y/N]: "
-	read;
+	read -p "Are the settings correct? [y/N]: "
 	[ $REPLY == "y" ] && break
 	done
 }

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Other
-pacman --noconfirm -S gufw grub-btrfs openssh timeshift timeshift-autosnap zsh
+pacman --noconfirm -S auto-cpufreq btrfs-progs ufw gufw grub-btrfs openssh timeshift timeshift-autosnap zsh
 systemctl enable sshd
 timeshift --list
 systemctl enable grub-btrfs.path

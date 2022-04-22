@@ -34,7 +34,7 @@ gnome_bare() {
 	pipewire-media-session
 }
 
-$REPLY="1"
+REPLY="1"
 printf "1) Regular GNOME desktop install\n2) GNOME desktop with extras package\n3) Bare GNOME desktop install\n"
 read -p "Choose installation type [$REPLY]: "
 

@@ -140,6 +140,8 @@ grub_config() {
 	! [ -z $SCRIPT_OS_PROBER ] && arch-chroot /mnt sed -ri -e "s/^GRUB_DISABLE_OS_PROBER=.*/GRUB_DISABLE_OS_PROBER=false/g" /etc/default/grub
 }
 
+bash <(curl -sL https://raw.githubusercontent.com/mortyr45/fulcrum-arch/master/files/scripts/pacman.sh)
+
 prompts
 bootstrap
 grub_config

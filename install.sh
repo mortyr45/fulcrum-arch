@@ -41,7 +41,7 @@ prompts() {
 
 	SCRIPT_INSTALL_DKMS="n"
 	read -p "Install dynamic kernel modules system? (dkms) [y/N]: "
-	[ "$REPLY" == "y" ] SCRIPT_INSTALL_DKMS="y"
+	[ "$REPLY" == "y" ] && SCRIPT_INSTALL_DKMS="y"
 	
 	SCRIPT_CPU_MITIGATIONS="0"
 	printf "Whicch cpu microcode package would you like to install?\n0) none\n1) amd-ucode\n2) intel-ucode\n"

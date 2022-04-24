@@ -93,7 +93,7 @@ if [ "$1" == "auto" ] ; then
     exit 0
 fi
 
-REPLY="1 2 3 4"
+REPLY="1"
 printf "1) Enable cache cleaning hook\n2) Enable multilib (32-bit packages)\n3) Enable katsuo repository\n4) Enable chaotic-aur (requires multilib)\n0) nothing\n"
 read -p "Choose pacman configuration options [$REPLY]: "
 

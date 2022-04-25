@@ -48,6 +48,10 @@ prompts() {
 	read -p "Please choose cpu microcode mitigation to be installed [$SCRIPT_CPU_MITIGATIONS]: ";
 	! [ -z $REPLY ] && SCRIPT_CPU_MITIGATIONS=$REPLY
 
+	SCRIPT_ADDITIONAL_PACKAGES=""
+	read -p "Additional packages to install []: ";
+	! [ -z $REPLY ] && SCRIPT_ADDITIONAL_PACKAGES=$REPLY
+
 	clear
 	echo "Timezone: $SCRIPT_TIMEZONE"
 	echo "Locale: $SCRIPT_LOCALE"
@@ -57,6 +61,7 @@ prompts() {
 	echo "Chosen kernel(s): $SCRIPT_KERNEL"
 	echo "Install dkms: $SCRIPT_INSTALL_DKMS"
 	echo "Chosen cpu microcode mitigation: $SCRIPT_CPU_MITIGATIONS"
+	echo "Additional packages to install: $SCRIPT_ADDITIONAL_PACKAGES"
 	read -p "Are the settings correct? [y/N]: "
 	[ $REPLY == "y" ] && break
 	done
@@ -94,7 +99,7 @@ bootstrap() {
 
 	[ "$SCRIPT_INSTALL_DKMS" == "y" ] && TEMP+=" dkms"
 
-	pacstrap /mnt base cronie efibootmgr grub $TEMP linux-firmware mkinitcpio nano networkmanager $SCRIPT_OS_PROBER sudo $SCRIPT_CPU_MITIGATIONS
+	pacstrap /mnt base cronie efibootmgr grub $TEMP linux-firmware mkinitcpio nano networkmanager $SCRIPT_OS_PROBER sudo $SCRIPT_CPU_MITIGATIONS $SCRIPT_ADDITIONAL_PACKAGES
 	genfstab -U /mnt > /mnt/etc/fstab
 
 	echo "Defaults editor=/usr/bin/rnano" >> /mnt/etc/sudoers

@@ -33,6 +33,9 @@ prompts() {
 
 	read -p "Would you like to install os-prober? [y/N]: "
 	[ "$REPLY" == "y" ] && SCRIPT_OS_PROBER="os-prober"
+
+	read -p "Configure mkinicpio (all hooks) [Y/n]: "
+	! [ -z "$REPLY" ] && SCRIPT_MKINITCPIO_CONFIG=$REPLY
 	
 	SCRIPT_KERNEL="1"
 	printf "Which kernel(s) would you like to install?\n1) linux-lts\n2) linux\n3) linux-hardened\n4) linux-zen\n0) without kernel\n"
@@ -58,6 +61,7 @@ prompts() {
 	echo "Hostname: $SCRIPT_HOSTNAME"
 	echo "Bootloader ID: $SCRIPT_BOOTLOADER_ID"
 	echo "Grub language: $SCRIPT_GRUB_LANG"
+	echo "Configure mkinitcpio: $SCRIPT_MKINITCPIO_CONFIG"
 	echo "Chosen kernel(s): $SCRIPT_KERNEL"
 	echo "Install dkms: $SCRIPT_INSTALL_DKMS"
 	echo "Chosen cpu microcode mitigation: $SCRIPT_CPU_MITIGATIONS"
@@ -130,6 +134,7 @@ bootstrap() {
 	echo "$SCRIPT_HOSTNAME" > /mnt/etc/hostname
 	arch-chroot /mnt grub-install --target=x86_64-efi --bootloader-id=$SCRIPT_BOOTLOADER_ID
 	arch-chroot /mnt cp /usr/share/locale/$SCRIPT_GRUB_LANG\@quot/LC_MESSAGES/grub.mo /boot/grub/locale/$SCRIPT_GRUB_LANG.mo
+	[ "$SCRIPT_MKINITCPIO_CONFIG" == "y" ] && arch-chroot /mnt sed -ri -e "s/^HOOKS=.*/HOOKS=\(base\ systemd\ autodetect\ modconf\ block\ mdadm_udev\ keyboard\ sd-vconsole\ sd-encrypt\ fsck\ filesystems\)/g" /etc/mkinitcpio.conf
 
 	arch-chroot /mnt systemctl enable NetworkManager
 	arch-chroot /mnt systemctl enable cronie

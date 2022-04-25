@@ -6,7 +6,7 @@ fn_lock_root_account() {
 
 fn_ufw_config() {
     pacman -Q ufw
-    if [ $? 0= 0 ] ; then
+    if [ $? == 0 ] ; then
         systemctl disable iptables
         ufw default deny incoming
         ufw default deny forward

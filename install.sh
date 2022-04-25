@@ -34,7 +34,7 @@ prompts() {
 	read -p "Would you like to install os-prober? [y/N]: "
 	[ "$REPLY" == "y" ] && SCRIPT_OS_PROBER="os-prober"
 
-	read -p "Configure mkinicpio (all hooks) [Y/n]: "
+	read -p "Configure mkinitcpio (all hooks) [Y/n]: "
 	! [ -z "$REPLY" ] && SCRIPT_MKINITCPIO_CONFIG=$REPLY
 	
 	SCRIPT_KERNEL="1"

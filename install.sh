@@ -144,9 +144,13 @@ grub_config() {
 read -p "Do you want to run disk setup? [y/N]: "
 [ "$REPLY" == "y" ] && bash <(curl -sL https://raw.githubusercontent.com/mortyr45/fulcrum-arch/master/disk-setup.sh)
 
+[ -f "pre-install-hook.sh" ] && bash pre-install-hook.sh && rm pre-install-hook.sh
+
 prompts
 bootstrap
 grub_config
+
+[ -f "post-install-hook.sh" ] && bash post-install-hook.sh && rm post-install-hook.sh
 
 CHROOT_INSTALL_FILES=("de-gnome" "filesystem-packages" "flatpaks" "pacman" "security-hardening" "test")
 for FILE in ${CHROOT_INSTALL_FILES[@]} ; do

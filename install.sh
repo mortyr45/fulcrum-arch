@@ -159,6 +159,7 @@ if [ "$REPLY" == "y" ] ; then
 	/bin/bash disk-setup.sh
 	rm disk-setup.sh
 fi
+exit
 #[ "$REPLY" == "y" ] && bash <(curl -sL https://raw.githubusercontent.com/mortyr45/fulcrum-arch/master/files/disk-setup.sh)
 
 prompts

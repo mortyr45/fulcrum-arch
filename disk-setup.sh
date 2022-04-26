@@ -52,7 +52,9 @@ fn_create_luks_partition() {
 #####
 
 fn_setup_btrfs_subvolumes() {
-    mount /dev/sda2 /mnt
+    BTRFS_PARTITION=$1
+    EFI_PARTITION=$2
+    mount $BTRFS_PARTITION /mnt
     btrfs subvolume create /mnt/@
     btrfs subvolume create /mnt/@home
     btrfs subvolume create /mnt/@cache
@@ -60,12 +62,12 @@ fn_setup_btrfs_subvolumes() {
     umount /mnt
 cat > pre-install-hook.sh<< EOF
 #!/bin/bash
-$1
-mount /dev/sda2 -o subvol=@ /mnt
-mount --mkdir /dev/sda2 -o subvol=@home /mnt/home
-mount --mkdir /dev/sda2 -o subvol=@cache /mnt/var/cache
-mount --mkdir /dev/sda2 -o subvol=@log /mnt/var/log
-mount --mkdir /dev/sda1 /mnt/boot/EFI
+
+mount $BTRFS_PARTITION -o subvol=@ /mnt
+mount --mkdir $BTRFS_PARTITION -o subvol=@home /mnt/home
+mount --mkdir $BTRFS_PARTITION -o subvol=@cache /mnt/var/cache
+mount --mkdir $BTRFS_PARTITION -o subvol=@log /mnt/var/log
+mount --mkdir $EFI_PARTITION /mnt/boot/EFI
 EOF
 }
 
@@ -82,7 +84,7 @@ fn_simple_btrfs() {
     mkfs.fat -F 32 "${DRIVE_TO_USE}1"
     fn_create_linux_partition $DRIVE_TO_USE
     mkfs.btrfs "${DRIVE_TO_USE}2"
-    fn_setup_btrfs_subvolumes "${DRIVE_TO_USE}2"
+    fn_setup_btrfs_subvolumes "${DRIVE_TO_USE}2" "${DRIVE_TO_USE}1"
 }
 
 DISK_SETUP_CHOICE="1"

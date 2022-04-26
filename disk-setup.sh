@@ -1,12 +1,12 @@
 #!/bin/bash
 
 fn_create_gpt_layout {
-echo $1
+    echo $1
 }
-fn_create_efi_partition {}
-fn_create_boot_partition {}
-fn_create_btrfs_partition {}
-fn_create_luks_partition {}
+#fn_create_efi_partition {}
+#fn_create_boot_partition {}
+#fn_create_btrfs_partition {}
+#fn_create_luks_partition {}
 
 fn_simple_btrfs {
     echo $1
@@ -37,7 +37,7 @@ case $REPLY in
     1)
         fn_simple_btrfs "called by main thingy" ;;
     2)
-        fn_encrypted_btrfs ;;
+        #fn_encrypted_btrfs ;;
     3)
-        fn_detached_encrypted_btrfs ;;
+        #fn_detached_encrypted_btrfs ;;
 esac

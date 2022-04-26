@@ -154,9 +154,7 @@ grub_config() {
 # bash <(curl -sL https://raw.githubusercontent.com/mortyr45/fulcrum-arch/master/files/scripts/pacman.sh) auto
 
 read -p "Do you want to run disk setup? [y/N]: "
-curl -sL https://raw.githubusercontent.com/mortyr45/fulcrum-arch/master/disk-setup.sh > disks.sh
 [ "$REPLY" == "y" ] && bash <(curl -sL https://raw.githubusercontent.com/mortyr45/fulcrum-arch/master/disk-setup.sh)
-exit
 
 prompts
 bootstrap

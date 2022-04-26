@@ -34,18 +34,10 @@ prompts() {
 	read -p "Would you like to install os-prober? [y/N]: "
 	[ "$REPLY" == "y" ] && SCRIPT_OS_PROBER="os-prober"
 	
-	SCRIPT_MKINITCPIO_CONFIG="y"
-	read -p "Configure mkinitcpio (all hooks) [Y/n]: "
-	! [ -z "$REPLY" ] && SCRIPT_MKINITCPIO_CONFIG=$REPLY
-	
 	SCRIPT_KERNEL="1"
 	printf "Which kernel(s) would you like to install?\n1) linux-lts\n2) linux\n3) linux-hardened\n4) linux-zen\n0) without kernel\n"
 	read -p "Choose multiple of them, by separating the numbers with a ' ' [$SCRIPT_KERNEL]: ";
 	! [ -z $REPLY ] && SCRIPT_KERNEL=$REPLY
-	
-	SCRIPT_INSTALL_DKMS="n"
-	read -p "Install dynamic kernel modules system? (dkms) [y/N]: "
-	[ "$REPLY" == "y" ] && SCRIPT_INSTALL_DKMS="y"
 	
 	SCRIPT_CPU_MITIGATIONS="0"
 	printf "Which cpu microcode package would you like to install?\n0) none\n1) amd-ucode\n2) intel-ucode\n"

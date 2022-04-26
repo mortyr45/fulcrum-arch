@@ -33,7 +33,7 @@ prompts() {
 
 	read -p "Would you like to install os-prober? [y/N]: "
 	[ "$REPLY" == "y" ] && SCRIPT_OS_PROBER="os-prober"
-
+	
 	SCRIPT_MKINITCPIO_CONFIG="y"
 	read -p "Configure mkinitcpio (all hooks) [Y/n]: "
 	! [ -z "$REPLY" ] && SCRIPT_MKINITCPIO_CONFIG=$REPLY
@@ -42,7 +42,7 @@ prompts() {
 	printf "Which kernel(s) would you like to install?\n1) linux-lts\n2) linux\n3) linux-hardened\n4) linux-zen\n0) without kernel\n"
 	read -p "Choose multiple of them, by separating the numbers with a ' ' [$SCRIPT_KERNEL]: ";
 	! [ -z $REPLY ] && SCRIPT_KERNEL=$REPLY
-
+	
 	SCRIPT_INSTALL_DKMS="n"
 	read -p "Install dynamic kernel modules system? (dkms) [y/N]: "
 	[ "$REPLY" == "y" ] && SCRIPT_INSTALL_DKMS="y"
@@ -62,9 +62,7 @@ prompts() {
 	echo "Hostname: $SCRIPT_HOSTNAME"
 	echo "Bootloader ID: $SCRIPT_BOOTLOADER_ID"
 	echo "Grub language: $SCRIPT_GRUB_LANG"
-	echo "Configure mkinitcpio: $SCRIPT_MKINITCPIO_CONFIG"
 	echo "Chosen kernel(s): $SCRIPT_KERNEL"
-	echo "Install dkms: $SCRIPT_INSTALL_DKMS"
 	echo "Chosen cpu microcode mitigation: $SCRIPT_CPU_MITIGATIONS"
 	echo "Additional packages to install: $SCRIPT_ADDITIONAL_PACKAGES"
 	read -p "Are the settings correct? [y/N]: "
@@ -102,9 +100,7 @@ bootstrap() {
 		esac
 	done
 
-	[ "$SCRIPT_INSTALL_DKMS" == "y" ] && TEMP+=" dkms"
-
-	pacstrap /mnt base cronie efibootmgr grub $TEMP linux-firmware mkinitcpio nano networkmanager $SCRIPT_OS_PROBER sudo $SCRIPT_CPU_MITIGATIONS $SCRIPT_ADDITIONAL_PACKAGES
+	pacstrap /mnt base cronie efibootmgr dkms grub $TEMP linux-firmware mkinitcpio nano networkmanager $SCRIPT_OS_PROBER sudo $SCRIPT_CPU_MITIGATIONS $SCRIPT_ADDITIONAL_PACKAGES
 	genfstab -U /mnt > /mnt/etc/fstab
 
 	echo "Defaults editor=/usr/bin/rnano" >> /mnt/etc/sudoers
@@ -135,7 +131,7 @@ bootstrap() {
 	echo "$SCRIPT_HOSTNAME" > /mnt/etc/hostname
 	arch-chroot /mnt grub-install --target=x86_64-efi --bootloader-id=$SCRIPT_BOOTLOADER_ID
 	arch-chroot /mnt cp /usr/share/locale/$SCRIPT_GRUB_LANG\@quot/LC_MESSAGES/grub.mo /boot/grub/locale/$SCRIPT_GRUB_LANG.mo
-	[ "$SCRIPT_MKINITCPIO_CONFIG" == "y" ] && arch-chroot /mnt sed -ri -e "s/^HOOKS=.*/HOOKS=\(systemd\ autodetect\ modconf\ block\ keyboard\ sd-vconsole\ sd-encrypt\ fsck\ filesystems\)/g" /etc/mkinitcpio.conf
+	arch-chroot /mnt sed -ri -e "s/^HOOKS=.*/HOOKS=\(systemd\ autodetect\ modconf\ block\ keyboard\ sd-vconsole\ sd-encrypt\ fsck\ filesystems\)/g" /etc/mkinitcpio.conf
 
 	arch-chroot /mnt systemctl enable NetworkManager
 	arch-chroot /mnt systemctl enable cronie

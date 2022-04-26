@@ -1,30 +1,82 @@
 #!/bin/bash
 
-fn_create_gpt_layout() {
-    echo $1
-}
-fn_create_efi_partition() {}
-fn_create_boot_partition() {}
-fn_create_btrfs_partition() {}
-fn_create_luks_partition() {}
+#####
+# Partition tables, partition creation
+#####
 
-fn_simple_btrfs() {
-    echo $1
-    fn_create_gpt_layout "called by simple btrfs"
-fdisk /dev/sda <<EOF
+fn_create_gpt_layout() {
+fdisk $1 <<EOF
 g
+w
+EOF
+}
+
+fn_create_efi_partition() {
+fdisk $1 <<EOF
 n
 
 
 +500M
 t
 1
+w
+EOF
+}
+
+fn_create_boot_partition() {
+fdisk $1 <<EOF
+n
+
+
++1G
+w
+EOF
+}
+
+fn_create_linux_partition() {
+fdisk $1 <<EOF
 n
 
 
 
 w
 EOF
+}
+
+fn_create_luks_partition() {}
+
+#####
+# Helper functions
+#####
+
+fn_setup_btrfs_subvolumes() {
+    mount /dev/sda2 /mnt
+    btrfs subvolume create /mnt/@
+    btrfs subvolume create /mnt/@home
+    btrfs subvolume create /mnt/@cache
+    btrfs subvolume create /mnt/@log
+    umount /mnt
+    mount /dev/sda2 -o subvol=@ /mnt
+    mount --mkdir /dev/sda2 -o subvol=@home /mnt/home
+    mount --mkdir /dev/sda2 -o subvol=@cache /mnt/var/cache
+    mount --mkdir /dev/sda2 -o subvol=@log /mnt/var/log
+    mount --mkdir /dev/sda1 /mnt/boot/EFI
+}
+
+#####
+# Control functions
+#####
+
+fn_simple_btrfs() {
+    DRIVE_TO_USE="/dev/sda"
+    read -p "Which drive to use? [$DRIVE_TO_USE]: "
+    ! [ -z $REPLY ] && DRIVE_TO_USE=$REPLY
+    fn_create_gpt_layout $DRIVE_TO_USE
+    fn_create_efi_partition $DRIVE_TO_USE
+    mkfs.fat -F 32 "${DRIVE_TO_USE}1"
+    fn_create_linux_partition $DRIVE_TO_USE
+    mkfs.btrfs "${DRIVE_TO_USE}2"
+    fn_setup_btrfs_subvolumes "${DRIVE_TO_USE}2"
 }
 
 DISK_SETUP_CHOICE="1"
@@ -36,7 +88,7 @@ read -p "Choose disk setup method [$DISK_SETUP_CHOICE]: "
 
 case $DISK_SETUP_CHOICE in
     1)
-        fn_simple_btrfs "called by main thingy" ;;
+        fn_simple_btrfs ;;
     2)
         fn_encrypted_btrfs ;;
     3)

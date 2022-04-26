@@ -26,11 +26,12 @@ fn_ssh_server_hardening() {
     fi
 }
 
-REPLY="1 2 3"
+SECURITY_HARDENING_OPTIONS="1 2 3"
 printf "1) Lock root account\n2) Set ufw configuration (requires ufw)\n3) Harden ssh server (requires openssh)\n"
-read -p "Choose security configuration options [$REPLY]: "
+read -p "Choose security configuration options [$SECURITY_HARDENING_OPTIONS]: "
+! [ -z $REPLY ] && SECURITY_HARDENING_OPTIONS=$REPLY
 
-for CHOICE in $REPLY ; do
+for CHOICE in $SECURITY_HARDENING_OPTIONS ; do
     case $CHOICE in
         1)
             fn_lock_root_account ;;

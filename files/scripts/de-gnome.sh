@@ -35,11 +35,12 @@ gnome_bare() {
 	pipewire-media-session
 }
 
-REPLY="1"
+GNOME_INSTALLATION_TYPE="1"
 printf "1) Regular GNOME desktop install\n2) GNOME desktop with extras package\n3) Bare GNOME desktop install\n"
-read -p "Choose installation type [$REPLY]: "
+read -p "Choose installation type [$GNOME_INSTALLATION_TYPE]: "
+! [ -z $REPLY ] && GNOME_INSTALLATION_TYPE=$REPLY
 
-case $REPLY in
+case $GNOME_INSTALLATION_TYPE in
 	1)
 		pacman --noconfirm -S gnome ;;
 	2)

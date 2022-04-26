@@ -27,14 +27,14 @@ w
 EOF
 }
 
-SCRIPT_DISK_SETUP_CHOICE="1"
+DISK_SETUP_CHOICE="1"
 echo "1) Simple btrfs (1 EFI partition and 1 btrfs partition)"
 echo "2) Encrypted btrfs (1 EFI partition and 1 encrypted btrfs partition)"
 echo "3) Encrypted btrfs with detached header (1 EFI partition, 1 /boot partition and 1 encrypted btrfs partition)"
-read -p "Choose disk setup method [$SCRIPT_DISK_SETUP_CHOICE]: "
-! [ -z $REPLY ] && SCRIPT_DISK_SETUP_CHOICE=$REPLY
+read -p "Choose disk setup method [$DISK_SETUP_CHOICE]: "
+! [ -z $REPLY ] && DISK_SETUP_CHOICE=$REPLY
 
-case $REPLY in
+case $DISK_SETUP_CHOICE in
     1)
         fn_simple_btrfs "called by main thingy" ;;
     2)

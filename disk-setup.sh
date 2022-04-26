@@ -58,11 +58,15 @@ fn_setup_btrfs_subvolumes() {
     btrfs subvolume create /mnt/@cache
     btrfs subvolume create /mnt/@log
     umount /mnt
-    mount /dev/sda2 -o subvol=@ /mnt
-    mount --mkdir /dev/sda2 -o subvol=@home /mnt/home
-    mount --mkdir /dev/sda2 -o subvol=@cache /mnt/var/cache
-    mount --mkdir /dev/sda2 -o subvol=@log /mnt/var/log
-    mount --mkdir /dev/sda1 /mnt/boot/EFI
+cat > pre-install-hook.sh<< EOF
+#!/bin/bash
+$1
+mount /dev/sda2 -o subvol=@ /mnt
+mount --mkdir /dev/sda2 -o subvol=@home /mnt/home
+mount --mkdir /dev/sda2 -o subvol=@cache /mnt/var/cache
+mount --mkdir /dev/sda2 -o subvol=@log /mnt/var/log
+mount --mkdir /dev/sda1 /mnt/boot/EFI
+EOF
 }
 
 #####

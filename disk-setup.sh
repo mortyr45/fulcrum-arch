@@ -67,6 +67,14 @@ mount --mkdir $EFI_PARTITION /mnt/boot/EFI
 EOF
 }
 
+fn_generate_hook_post_grub() {
+    DRIVE_UUID=$(blkid -s UUID -o value $1)
+cat > post-install-hook.sh<< EOF
+arch-chroot /mnt sed -ri -e "s/^.*GRUB_ENABLE_CRYPTODISK=.*/GRUB_ENABLE_CRYPTODISK=y/g" /etc/default/grub
+arch-chroot /mnt sed -ri -e "s/^.*GRUB_CMDLINE_LINUX=.*/GRUB_CMDLINE_LINUX=\"cryptdevice=UUID=$DRIVE_UUID:luks_root\"/g" /etc/default/grub
+EOF
+}
+
 #####
 # Control functions
 #####
@@ -75,12 +83,29 @@ fn_simple_btrfs() {
     DRIVE_TO_USE="/dev/sda"
     read -p "Which drive to use? [$DRIVE_TO_USE]: "
     ! [ -z $REPLY ] && DRIVE_TO_USE=$REPLY
+
     fn_create_gpt_layout $DRIVE_TO_USE
     fn_create_efi_partition $DRIVE_TO_USE
     mkfs.fat -F 32 "${DRIVE_TO_USE}1"
     fn_create_linux_partition $DRIVE_TO_USE
     mkfs.btrfs "${DRIVE_TO_USE}2"
     fn_setup_btrfs_subvolumes "${DRIVE_TO_USE}2" "${DRIVE_TO_USE}1"
+}
+
+fn_encrypted_btrfs() {
+    DRIVE_TO_USE="/dev/sda"
+    read -p "Which drive to use? [$DRIVE_TO_USE]: "
+    ! [ -z $REPLY ] && DRIVE_TO_USE=$REPLY
+
+    fn_create_gpt_layout $DRIVE_TO_USE
+    fn_create_efi_partition $DRIVE_TO_USE
+    mkfs.fat -F 32 "${DRIVE_TO_USE}1"
+    fn_create_linux_partition $DRIVE_TO_USE
+    cryptsetup luksFormat "${DRIVE_TO_USE}2"
+    cryptsetup open "${DRIVE_TO_USE}2" luks_root
+    mkfs.btrfs /dev/mapper/luks_root
+    fn_setup_btrfs_subvolumes /dev/mapper/luks_root "${DRIVE_TO_USE}1"
+    fn_generate_hook_post_grub "${DRIVE_TO_USE}2"
 }
 
 DISK_SETUP_CHOICE="1"

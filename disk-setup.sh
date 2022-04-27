@@ -43,10 +43,6 @@ w
 EOF
 }
 
-fn_create_luks_partition() {
-    echo "luks"
-}
-
 #####
 # Helper functions
 #####

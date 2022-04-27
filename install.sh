@@ -152,14 +152,14 @@ grub_config
 
 arch-chroot /mnt grub-install --target=x86_64-efi --bootloader-id=$SCRIPT_BOOTLOADER_ID
 
+arch-chroot /mnt
+
+arch-chroot /mnt mkinitcpio -P
+arch-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg
+
 CHROOT_INSTALL_FILES=("de-gnome" "filesystem-packages" "flatpaks" "pacman" "security-hardening" "test")
 for FILE in ${CHROOT_INSTALL_FILES[@]} ; do
 	! [ -f "install-$FILE.sh" ] && curl -sL https://raw.githubusercontent.com/mortyr45/fulcrum-arch/master/files/scripts/$FILE.sh > /mnt/root/fulos-$FILE.sh
 	[ $? != 0 ] && exit 1
 	chmod +x /mnt/root/fulos-$FILE.sh
 done
-
-arch-chroot /mnt
-
-arch-chroot /mnt mkinitcpio -P
-arch-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg

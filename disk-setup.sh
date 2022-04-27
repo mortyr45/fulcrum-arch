@@ -108,7 +108,7 @@ fn_encrypted_btrfs() {
     cryptsetup open "${DRIVE_TO_USE}3" luks_root
     mkfs.btrfs /dev/mapper/luks_root
     fn_setup_btrfs_subvolumes /dev/mapper/luks_root "${DRIVE_TO_USE}2" "${DRIVE_TO_USE}1"
-    fn_generate_hook_post_grub "${DRIVE_TO_USE}3"
+    fn_generate_hook_post_crypttab_initramfs "${DRIVE_TO_USE}3"
 }
 
 DISK_SETUP_CHOICE="1"

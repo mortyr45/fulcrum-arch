@@ -86,7 +86,7 @@ fn_simple_btrfs() {
     fn_create_gpt_layout $DRIVE_TO_USE
     fn_create_efi_partition $DRIVE_TO_USE
     mkfs.fat -F 32 "${DRIVE_TO_USE}1"
-    fn_create_linux_partition $DRIVE_TO_USE
+    fn_create_boot_partition $DRIVE_TO_USE
     mkfs.ext4 "${DRIVE_TO_USE}2"
     fn_create_linux_partition $DRIVE_TO_USE
     mkfs.btrfs "${DRIVE_TO_USE}3"
@@ -101,7 +101,7 @@ fn_encrypted_btrfs() {
     fn_create_gpt_layout $DRIVE_TO_USE
     fn_create_efi_partition $DRIVE_TO_USE
     mkfs.fat -F 32 "${DRIVE_TO_USE}1"
-    fn_create_linux_partition $DRIVE_TO_USE
+    fn_create_boot_partition $DRIVE_TO_USE
     mkfs.ext4 "${DRIVE_TO_USE}2"
     fn_create_linux_partition $DRIVE_TO_USE
     cryptsetup luksFormat "${DRIVE_TO_USE}3"

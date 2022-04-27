@@ -92,7 +92,7 @@ bootstrap() {
 		esac
 	done
 
-	pacstrap /mnt base cronie efibootmgr dkms grub $TEMP linux-firmware mkinitcpio nano networkmanager $SCRIPT_OS_PROBER sudo $SCRIPT_CPU_MITIGATIONS $SCRIPT_ADDITIONAL_PACKAGES
+	pacstrap /mnt base btrfs-progs cronie efibootmgr dkms grub $TEMP linux-firmware mkinitcpio nano networkmanager $SCRIPT_OS_PROBER sudo $SCRIPT_CPU_MITIGATIONS $SCRIPT_ADDITIONAL_PACKAGES
 	genfstab -U /mnt > /mnt/etc/fstab
 
 	echo "Defaults editor=/usr/bin/rnano" >> /mnt/etc/sudoers

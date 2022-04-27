@@ -71,7 +71,7 @@ EOF
 
 fn_generate_hook_post_crypttab_initramfs() {
     DRIVE_UUID=$(blkid -s UUID -o value $1)
-    echo "luks_root /dev/disk/by-uuid/$DRIVE_UUID none defaults" > /mnt/etc/crypttab.initramfs
+    echo "luks_root /dev/disk/by-uuid/$DRIVE_UUID none luks" > /mnt/etc/crypttab.initramfs
 }
 
 #####

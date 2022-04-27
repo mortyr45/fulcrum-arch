@@ -101,7 +101,7 @@ fn_encrypted_btrfs() {
     fn_create_efi_partition $DRIVE_TO_USE
     mkfs.fat -F 32 "${DRIVE_TO_USE}1"
     fn_create_linux_partition $DRIVE_TO_USE
-    cryptsetup luksFormat "${DRIVE_TO_USE}2"
+    cryptsetup -y --type luks1 luksFormat "${DRIVE_TO_USE}2"
     cryptsetup open "${DRIVE_TO_USE}2" luks_root
     mkfs.btrfs /dev/mapper/luks_root
     fn_setup_btrfs_subvolumes /dev/mapper/luks_root "${DRIVE_TO_USE}1"

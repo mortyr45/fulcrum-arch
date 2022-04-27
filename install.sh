@@ -121,7 +121,6 @@ bootstrap() {
 	arch-chroot /mnt sed -ri -e "s/^#$SCRIPT_LOCALE/$SCRIPT_LOCALE/g" /etc/locale.gen
 	arch-chroot /mnt locale-gen
 	echo "$SCRIPT_HOSTNAME" > /mnt/etc/hostname
-	arch-chroot /mnt grub-install --target=x86_64-efi --bootloader-id=$SCRIPT_BOOTLOADER_ID
 	arch-chroot /mnt cp /usr/share/locale/$SCRIPT_GRUB_LANG\@quot/LC_MESSAGES/grub.mo /boot/grub/locale/$SCRIPT_GRUB_LANG.mo
 	arch-chroot /mnt sed -ri -e "s/^HOOKS=.*/HOOKS=\(systemd\ autodetect\ modconf\ block\ keyboard\ sd-vconsole\ sd-encrypt\ fsck\ filesystems\)/g" /etc/mkinitcpio.conf
 
@@ -150,6 +149,8 @@ bootstrap
 grub_config
 
 [ -f "post-install-hook.sh" ] && bash post-install-hook.sh
+
+arch-chroot /mnt grub-install --target=x86_64-efi --bootloader-id=$SCRIPT_BOOTLOADER_ID
 
 CHROOT_INSTALL_FILES=("de-gnome" "filesystem-packages" "flatpaks" "pacman" "security-hardening" "test")
 for FILE in ${CHROOT_INSTALL_FILES[@]} ; do

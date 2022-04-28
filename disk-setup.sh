@@ -174,4 +174,6 @@ case $DISK_SETUP_CHOICE in
         fn_encrypted_btrfs ;;
     3)
         fn_detached_encrypted_btrfs ;;
+    4)
+        fn_setup_disks ;;
 esac

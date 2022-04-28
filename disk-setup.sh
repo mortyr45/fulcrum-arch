@@ -107,7 +107,7 @@ fn_setup_disks() {
     else
         BOOT_PATH="/dev/$BOOT_PARTITION"
     fi
-    mkfs.ext4 /dev/$BOOT_PARTITION
+    mkfs.ext4 $BOOT_PATH
 
     ROOT_PARTITION="sda3"
     read -p "Which partition is to be used for root? [$ROOT_PARTITION]: "

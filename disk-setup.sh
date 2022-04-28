@@ -84,6 +84,48 @@ fn_generate_hook_post_crypttab_initramfs() {
 # Control functions
 #####
 
+fn_setup_disks() {
+    EFI_PARTITION="sda1"
+    read -p "Which drive to use? [$EFI_DRIVE]: "
+    ! [ -z $REPLY ] && EFI_PARTITION=$REPLY
+    EFI_PATH="/dev/$EFI_PARTITION"
+    mkfs.fat -F 32 $EFI_PATH
+
+    BOOT_PARTITION="sda2"
+    read -p "Which drive to use? [$BOOT_PARTITION]: "
+    ! [ -z $REPLY ] && BOOT_PARTITION=$REPLY
+    read -p "Encrypt /boot partition? [y/N]: "
+    ! [ -z $REPLY ] && ENCRYPT_BOOT_PARTITION=$REPLY
+
+    if [ "$ENCRYPT_BOOT_PARTITION" == "y" ] ; then
+        cryptsetup luksFormat --type luks1 /dev/$BOOT_PARTITION
+        cryptsetup open /dev/$BOOT_PARTITION luks_boot
+        fn_generate_hook_post_grub $BOOT_PARTITION
+        BOOT_PATH="/dev/mapper/luks_boot"
+    else
+        BOOT_PATH="/dev/$BOOT_PARTITION"
+    fi
+    mkfs.ext4 /dev/$BOOT_PARTITION
+
+    ROOT_PARTITION="sda3"
+    read -p "Which drive to use? [$ROOT_PARTITION]: "
+    ! [ -z $REPLY ] && ROOT_PARTITION=$REPLY
+    read -p "Encrypt root partition? [y/N]: "
+    ! [ -z $REPLY ] && ENCRYPT_ROOT_PARTITION=$REPLY
+
+    if [ "$ENCRYPT_ROOT_PARTITION" == "y" ] ; then
+        cryptsetup luksFormat /dev/$ROOT_PARTITION
+        cryptsetup open /dev/$ROOT_PARTITION luks_root
+        fn_generate_hook_post_crypttab_initramfs $ROOT_PARTITION
+        ROOT_PATH="/dev/mapper/luks_root"
+    else
+        ROOT_PATH="/dev/$ROOT_PARTITION"
+    fi
+    mkfs.btrfs $ROOT_PATH
+
+    fn_setup_btrfs_subvolumes $ROOT_PATH $BOOT_PATH $EFI_PATH
+}
+
 fn_simple_btrfs() {
     DRIVE_TO_USE="/dev/sda"
     read -p "Which drive to use? [$DRIVE_TO_USE]: "

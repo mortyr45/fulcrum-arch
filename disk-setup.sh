@@ -86,13 +86,13 @@ fn_generate_hook_post_crypttab_initramfs() {
 
 fn_setup_disks() {
     EFI_PARTITION="sda1"
-    read -p "Which drive to use? [$EFI_DRIVE]: "
+    read -p "Which partition is to be used for EFI? [$EFI_PARTITION]: "
     ! [ -z $REPLY ] && EFI_PARTITION=$REPLY
     EFI_PATH="/dev/$EFI_PARTITION"
     mkfs.fat -F 32 $EFI_PATH
 
     BOOT_PARTITION="sda2"
-    read -p "Which drive to use? [$BOOT_PARTITION]: "
+    read -p "Which partition is to be used for /boot? [$BOOT_PARTITION]: "
     ! [ -z $REPLY ] && BOOT_PARTITION=$REPLY
     read -p "Encrypt /boot partition? [y/N]: "
     ! [ -z $REPLY ] && ENCRYPT_BOOT_PARTITION=$REPLY
@@ -108,7 +108,7 @@ fn_setup_disks() {
     mkfs.ext4 /dev/$BOOT_PARTITION
 
     ROOT_PARTITION="sda3"
-    read -p "Which drive to use? [$ROOT_PARTITION]: "
+    read -p "Which partition is to be used for root? [$ROOT_PARTITION]: "
     ! [ -z $REPLY ] && ROOT_PARTITION=$REPLY
     read -p "Encrypt root partition? [y/N]: "
     ! [ -z $REPLY ] && ENCRYPT_ROOT_PARTITION=$REPLY

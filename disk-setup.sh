@@ -97,7 +97,7 @@ fn_simple_btrfs() {
 
 fn_encrypted_btrfs() {
     DRIVE_TO_USE="sda"
-    read -p "Which drive to use? [/dev/$DRIVE_TO_USE]: "
+    read -p "Which drive to use? [$DRIVE_TO_USE]: "
     ! [ -z $REPLY ] && DRIVE_TO_USE=$REPLY
     FULL_DRIVE="/dev/$DRIVE_TO_USE"
 

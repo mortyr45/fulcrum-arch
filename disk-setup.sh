@@ -70,9 +70,9 @@ EOF
 }
 
 fn_generate_hook_post_crypttab_initramfs() {
-    DRIVE_UUID=$(blkid -s UUID -o value $1)
+    PARTITION_ID=$(ls -l /dev/disk/by-id | grep $1 | cut -d ' ' -f 11)
 cat > post-install-hook.sh<< EOF
-echo "luks_root /dev/disk/by-uuid/$DRIVE_UUID none luks" > /mnt/etc/crypttab.initramfs
+echo "luks_root /dev/disk/by-id/$PARTITION_ID none luks" > /mnt/etc/crypttab.initramfs
 EOF
 }
 
@@ -96,20 +96,21 @@ fn_simple_btrfs() {
 }
 
 fn_encrypted_btrfs() {
-    DRIVE_TO_USE="/dev/sda"
-    read -p "Which drive to use? [$DRIVE_TO_USE]: "
+    DRIVE_TO_USE="sda"
+    read -p "Which drive to use? [/dev/$DRIVE_TO_USE]: "
     ! [ -z $REPLY ] && DRIVE_TO_USE=$REPLY
+    FULL_DRIVE="/dev/$DRIVE_TO_USE"
 
-    fn_create_gpt_layout $DRIVE_TO_USE
-    fn_create_efi_partition $DRIVE_TO_USE
-    mkfs.fat -F 32 "${DRIVE_TO_USE}1"
-    fn_create_boot_partition $DRIVE_TO_USE
-    mkfs.ext4 "${DRIVE_TO_USE}2"
-    fn_create_linux_partition $DRIVE_TO_USE
-    cryptsetup luksFormat "${DRIVE_TO_USE}3"
-    cryptsetup open "${DRIVE_TO_USE}3" luks_root
+    fn_create_gpt_layout $FULL_DRIVE
+    fn_create_efi_partition $FULL_DRIVE
+    mkfs.fat -F 32 "${FULL_DRIVE}1"
+    fn_create_boot_partition FULL_DRIVE
+    mkfs.ext4 "${FULL_DRIVE}2"
+    fn_create_linux_partition $FULL_DRIVE
+    cryptsetup luksFormat "${FULL_DRIVE}3"
+    cryptsetup open "${FULL_DRIVE}3" luks_root
     mkfs.btrfs /dev/mapper/luks_root
-    fn_setup_btrfs_subvolumes /dev/mapper/luks_root "${DRIVE_TO_USE}2" "${DRIVE_TO_USE}1"
+    fn_setup_btrfs_subvolumes /dev/mapper/luks_root "${FULL_DRIVE}2" "${FULL_DRIVE}1"
     fn_generate_hook_post_crypttab_initramfs "${DRIVE_TO_USE}3"
 }
 

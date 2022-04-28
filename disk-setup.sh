@@ -69,6 +69,12 @@ mount --mkdir $EFI_PARTITION /mnt/boot/EFI
 EOF
 }
 
+fn_generate_hook_post_grub() {
+    PARTITION_UUID=$(blkid -s UUID -o value /dev/$1)
+    echo "sed -ri -e \"s/^.*GRUB_ENABLE_CRYPTODISK=.*/GRUB_ENABLE_CRYPTODISK=y/g\" /mnt/etc/default/grub" >> post-install-hook.sh
+    echo "sed -ri -e \"s/^.*GRUB_CMDLINE_LINUX=.*/GRUB_CMDLINE_LINUX='cryptdevice=UUID=$PARTITION_UUID:luks_boot'/g\" /mnt/etc/default/grub" >> post-install-hook.sh
+}
+
 fn_generate_hook_post_crypttab_initramfs() {
     PARTITION_PATH=$(ls -l /dev/disk/by-path | grep $1 | cut -d ' ' -f 9)
     echo "echo \"luks_root /dev/disk/by-path/$PARTITION_PATH none luks\" > /mnt/etc/crypttab.initramfs" >> post-install-hook.sh

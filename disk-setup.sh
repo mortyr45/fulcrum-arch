@@ -70,9 +70,9 @@ EOF
 }
 
 fn_generate_hook_post_crypttab_initramfs() {
-    PARTITION_ID=$(ls -l /dev/disk/by-id | grep $1 | cut -d ' ' -f 11)
+    PARTITION_PATH=$(ls -l /dev/disk/by-path | grep $1 | cut -d ' ' -f 11)
 cat > post-install-hook.sh<< EOF
-echo "luks_root /dev/disk/by-id/$PARTITION_ID none luks" > /mnt/etc/crypttab.initramfs
+echo "luks_root /dev/disk/by-path/$PARTITION_PATH none luks" > /mnt/etc/crypttab.initramfs
 EOF
 }
 

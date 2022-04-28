@@ -104,7 +104,7 @@ fn_encrypted_btrfs() {
     fn_create_gpt_layout $FULL_DRIVE
     fn_create_efi_partition $FULL_DRIVE
     mkfs.fat -F 32 "${FULL_DRIVE}1"
-    fn_create_boot_partition FULL_DRIVE
+    fn_create_boot_partition $FULL_DRIVE
     mkfs.ext4 "${FULL_DRIVE}2"
     fn_create_linux_partition $FULL_DRIVE
     cryptsetup luksFormat "${FULL_DRIVE}3"

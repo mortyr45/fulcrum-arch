@@ -77,7 +77,9 @@ fn_generate_hook_post_grub() {
 
 fn_generate_hook_post_crypttab_initramfs() {
     PARTITION_PATH=$(ls -l /dev/disk/by-path | grep $1 | cut -d ' ' -f 9)
-    echo "echo \"luks_root /dev/disk/by-path/$PARTITION_PATH none luks\" > /mnt/etc/crypttab.initramfs" >> post-install-hook.sh
+    CRYPT_OPTION="luks"
+    ! [ -z $2 ] && CRYPT_OPTION+=",header=/luks_root_header.img:UUID=$2"
+    echo "echo \"luks_root /dev/disk/by-path/$PARTITION_PATH none $CRYPT_OPTION\" > /mnt/etc/crypttab.initramfs" >> post-install-hook.sh
 }
 
 #####
@@ -114,9 +116,20 @@ fn_setup_disks() {
     ! [ -z $REPLY ] && ENCRYPT_ROOT_PARTITION=$REPLY
 
     if [ "$ENCRYPT_ROOT_PARTITION" == "y" ] ; then
-        cryptsetup luksFormat /dev/$ROOT_PARTITION
-        cryptsetup open /dev/$ROOT_PARTITION luks_root
-        fn_generate_hook_post_crypttab_initramfs $ROOT_PARTITION
+        read -p "Detach encryption header for root partition? [y/N]: "
+        ! [ -z $REPLY ] && DETACH_HEADER=$REPLY
+
+        if [ "$DETACH_HEADER" == "y" ] ; then
+            cryptsetup luksFormat /dev/$ROOT_PARTITION --offset 32768 --header luks_root_header.img
+            cryptsetup open --header luks_root_header.img /dev/$ROOT_PARTITION luks_root
+            BOOT_UUID=$(blkid -s UUID -o value $BOOT_PATH)
+            fn_generate_hook_post_crypttab_initramfs $ROOT_PARTITION $BOOT_UUID
+        else
+            cryptsetup luksFormat /dev/$ROOT_PARTITION
+            cryptsetup open /dev/$ROOT_PARTITION luks_root
+            fn_generate_hook_post_crypttab_initramfs $ROOT_PARTITION
+        fi
+        
         ROOT_PATH="/dev/mapper/luks_root"
     else
         ROOT_PATH="/dev/$ROOT_PARTITION"

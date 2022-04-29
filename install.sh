@@ -75,7 +75,7 @@ bootstrap() {
 		2)
 			INSTALL_PACKAGES+=" intel-ucode" ;;
 		3)
-			INSTALL_PACKAGES+=" amd-ucode intel-ucode"
+			INSTALL_PACKAGES+=" amd-ucode intel-ucode" ;;
 		0)
 			INSTALL_PACKAGES+="" ;;
 	esac

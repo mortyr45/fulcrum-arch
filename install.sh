@@ -128,7 +128,7 @@ bootstrap() {
 	#arch-chroot /mnt locale-gen
 	#echo "$SCRIPT_HOSTNAME" > /mnt/etc/hostname
 	#arch-chroot /mnt cp /usr/share/locale/$SCRIPT_GRUB_LANG\@quot/LC_MESSAGES/grub.mo /boot/grub/locale/$SCRIPT_GRUB_LANG.mo
-	#arch-chroot /mnt sed -ri -e "s/^HOOKS=.*/HOOKS=\(base\ systemd\ autodetect\ modconf\ block\ keyboard\ sd-vconsole\ sd-encrypt\ fsck\ filesystems\)/g" /etc/mkinitcpio.conf
+	arch-chroot /mnt sed -ri -e "s/^HOOKS=.*/HOOKS=\(systemd\ keyboard\ modconf\ block\ sd-encrypt\ fsck\ filesystems\)/g" /etc/mkinitcpio.conf
 	echo "COMPRESSION=\"cat\"" >> /mnt/etc/mkinitcpio.conf
 
 	arch-chroot /mnt systemctl enable NetworkManager

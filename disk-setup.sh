@@ -63,6 +63,7 @@ fn_setup_disks() {
         ! [ -z $REPLY ] && DETACH_HEADER=$REPLY
 
         if [ "$DETACH_HEADER" == "y" ] ; then
+            dd if=/dev/zero of=luks_root_header.img bs=16M count=1
             cryptsetup luksFormat /dev/$ROOT_PARTITION --offset 32768 --header luks_root_header.img
             cryptsetup open --header luks_root_header.img /dev/$ROOT_PARTITION luks_root
             BOOT_UUID=$(blkid -s UUID -o value $BOOT_PATH)

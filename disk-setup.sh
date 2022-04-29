@@ -70,7 +70,7 @@ EOF
 }
 
 fn_generate_hook_post_grub() {
-    PARTITION_UUID=$(blkid -s UUID -o value $1)
+    PARTITION_UUID=$(blkid -s UUID -o value /dev/$1)
     echo "sed -ri -e \"s/^.*GRUB_ENABLE_CRYPTODISK=.*/GRUB_ENABLE_CRYPTODISK=y/g\" /mnt/etc/default/grub" >> post-install-hook.sh
     echo "echo \"luks_boot $PARTITION_UUID q luks\" >> /mnt/etc/crypttab" >> post-install-hook.sh
     #echo "sed -ri -e \"s/^.*GRUB_CMDLINE_LINUX=.*/GRUB_CMDLINE_LINUX='cryptdevice=UUID=$PARTITION_UUID:luks_boot'/g\" /mnt/etc/default/grub" >> post-install-hook.sh
@@ -104,7 +104,7 @@ fn_setup_disks() {
         cryptsetup luksFormat --type luks1 /dev/$BOOT_PARTITION
         cryptsetup open /dev/$BOOT_PARTITION luks_boot
         BOOT_PATH="/dev/mapper/luks_boot"
-        fn_generate_hook_post_grub $BOOT_PATH
+        fn_generate_hook_post_grub $BOOT_PARTITION
     else
         BOOT_PATH="/dev/$BOOT_PARTITION"
     fi

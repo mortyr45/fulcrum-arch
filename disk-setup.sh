@@ -31,7 +31,7 @@ fn_generate_hook_post_crypttab_initramfs() {
     CRYPT_OPTION="luks"
     ! [ -z $2 ] && CRYPT_OPTION="header=/luks_root_header.img:UUID=$2"
     echo "echo \"luks_root /dev/disk/by-path/$PARTITION_PATH none $CRYPT_OPTION\" > /mnt/etc/crypttab.initramfs" >> post-install-hook.sh
-    ! [ -z $2 ] && echo "mv luks_root_header.img /mnt/boot" >> post-install-hook.sh
+    ! [ -z $2 ] && echo "mv luks_root_header.img /mnt/boot" >> pre-install-hook.sh
 }
 
 #####

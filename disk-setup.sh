@@ -104,7 +104,7 @@ fn_setup_disks() {
         cryptsetup luksFormat --type luks1 /dev/$BOOT_PARTITION
         cryptsetup open /dev/$BOOT_PARTITION luks_boot
         BOOT_PATH="/dev/mapper/luks_boot"
-        fn_generate_hook_post_grub $PATH
+        fn_generate_hook_post_grub $BOOT_PATH
     else
         BOOT_PATH="/dev/$BOOT_PARTITION"
     fi

@@ -40,7 +40,7 @@ prompts() {
 	! [ -z $REPLY ] && SCRIPT_KERNEL=$REPLY
 	
 	SCRIPT_CPU_MITIGATIONS="0"
-	printf "Which cpu microcode package would you like to install?\n0) none\n1) amd-ucode\n2) intel-ucode\n"
+	printf "Which cpu microcode package would you like to install?\n0) none\n1) amd-ucode\n2) intel-ucode\n3) both\n"
 	read -p "Please choose cpu microcode mitigation to be installed [$SCRIPT_CPU_MITIGATIONS]: ";
 	! [ -z $REPLY ] && SCRIPT_CPU_MITIGATIONS=$REPLY
 
@@ -66,33 +66,39 @@ prompts() {
 # Bootstrap
 #####
 bootstrap() {
+	INSTALL_PACKAGES="base btrfs-progs cronie efibootmgr dkms grub linux-firmware mkinitcpio nano networkmanager sudo"
+
 	timedatectl set-ntp true
 	case $SCRIPT_CPU_MITIGATIONS in
-		0)
-			SCRIPT_CPU_MITIGATIONS="" ;;
 		1)
-			SCRIPT_CPU_MITIGATIONS="amd-ucode" ;;
+			INSTALL_PACKAGES+=" amd-ucode" ;;
 		2)
-			SCRIPT_CPU_MITIGATIONS="intel-ucode" ;;
+			INSTALL_PACKAGES+=" intel-ucode" ;;
+		3)
+			INSTALL_PACKAGES+=" amd-ucode intel-ucode"
+		0)
+			INSTALL_PACKAGES+="" ;;
 	esac
 
-	TEMP=""
 	for KERNEL in $SCRIPT_KERNEL ; do
 		case $KERNEL in
 		1)
-			TEMP+=" linux-lts linux-lts-headers" ;;
+			INSTALL_PACKAGES+=" linux-lts linux-lts-headers" ;;
 		2)
-			TEMP+=" linux linux-headers" ;;
+			INSTALL_PACKAGES+=" linux linux-headers" ;;
 		3)
-			TEMP+=" linux-hardened linux-hardened-headers" ;;
+			INSTALL_PACKAGES+=" linux-hardened linux-hardened-headers" ;;
 		4)
-			TEMP+=" linux-zen linux-zen-headers" ;;
+			INSTALL_PACKAGES+=" linux-zen linux-zen-headers" ;;
 		0)
-			TEMP+="" ;;
+			INSTALL_PACKAGES+="" ;;
 		esac
 	done
 
-	pacstrap /mnt base btrfs-progs cronie efibootmgr dkms grub $TEMP linux-firmware mkinitcpio nano networkmanager sudo $SCRIPT_OS_PROBER $SCRIPT_CPU_MITIGATIONS $SCRIPT_ADDITIONAL_PACKAGES
+	INSTALL_PACKAGES+=$SCRIPT_OS_PROBER
+	INSTALL_PACKAGES+=" $SCRIPT_ADDITIONAL_PACKAGES"
+
+	pacstrap /mnt $INSTALL_PACKAGES
 	genfstab -U /mnt > /mnt/etc/fstab
 
 	echo "Defaults editor=/usr/bin/rnano" >> /mnt/etc/sudoers
@@ -117,11 +123,11 @@ bootstrap() {
 	arch-chroot /mnt useradd -m -G wheel $SCRIPT_USERNAME
 	echo $SCRIPT_USERNAME:$SCRIPT_PASSWORD | arch-chroot /mnt chpasswd
 
-	arch-chroot /mnt ln -sf /usr/share/zoneinfo/$SCRIPT_TIMEZONE /etc/localtime
-	arch-chroot /mnt sed -ri -e "s/^#$SCRIPT_LOCALE/$SCRIPT_LOCALE/g" /etc/locale.gen
-	arch-chroot /mnt locale-gen
-	echo "$SCRIPT_HOSTNAME" > /mnt/etc/hostname
-	arch-chroot /mnt cp /usr/share/locale/$SCRIPT_GRUB_LANG\@quot/LC_MESSAGES/grub.mo /boot/grub/locale/$SCRIPT_GRUB_LANG.mo
+	#arch-chroot /mnt ln -sf /usr/share/zoneinfo/$SCRIPT_TIMEZONE /etc/localtime
+	#arch-chroot /mnt sed -ri -e "s/^#$SCRIPT_LOCALE/$SCRIPT_LOCALE/g" /etc/locale.gen
+	#arch-chroot /mnt locale-gen
+	#echo "$SCRIPT_HOSTNAME" > /mnt/etc/hostname
+	#arch-chroot /mnt cp /usr/share/locale/$SCRIPT_GRUB_LANG\@quot/LC_MESSAGES/grub.mo /boot/grub/locale/$SCRIPT_GRUB_LANG.mo
 	arch-chroot /mnt sed -ri -e "s/^HOOKS=.*/HOOKS=\(systemd\ autodetect\ modconf\ block\ keyboard\ sd-vconsole\ sd-encrypt\ fsck\ filesystems\)/g" /etc/mkinitcpio.conf
 	echo "COMPRESSION=\"cat\"" >> /mnt/etc/mkinitcpio.conf
 
@@ -138,8 +144,6 @@ grub_config() {
 	arch-chroot /mnt sed -ri -e "s/^GRUB_TIMEOUT_STYLE=.*/GRUB_TIMEOUT_STYLE=menu/g" /etc/default/grub
 	! [ -z $SCRIPT_OS_PROBER ] && arch-chroot /mnt sed -ri -e "s/^.GRUB_DISABLE_OS_PROBER=.*/GRUB_DISABLE_OS_PROBER=false/g" /etc/default/grub
 }
-
-# bash <(curl -sL https://raw.githubusercontent.com/mortyr45/fulcrum-arch/master/files/scripts/pacman.sh) auto
 
 read -p "Do you want to run disk setup? [y/N]: "
 [ "$REPLY" == "y" ] && bash <(curl -sL https://raw.githubusercontent.com/mortyr45/fulcrum-arch/master/disk-setup.sh)

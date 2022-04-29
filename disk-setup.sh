@@ -1,49 +1,6 @@
 #!/bin/bash
 
 #####
-# Partition tables, partition creation
-#####
-
-fn_create_gpt_layout() {
-fdisk $1 <<EOF
-g
-w
-EOF
-}
-
-fn_create_efi_partition() {
-fdisk $1 <<EOF
-n
-
-
-+500M
-t
-1
-w
-EOF
-}
-
-fn_create_boot_partition() {
-fdisk $1 <<EOF
-n
-
-
-+1G
-w
-EOF
-}
-
-fn_create_linux_partition() {
-fdisk $1 <<EOF
-n
-
-
-
-w
-EOF
-}
-
-#####
 # Helper functions
 #####
 
@@ -69,18 +26,12 @@ mount --mkdir $EFI_PARTITION /mnt/boot/EFI
 EOF
 }
 
-fn_generate_hook_post_grub() {
-    PARTITION_UUID=$(blkid -s UUID -o value /dev/$1)
-    echo "sed -ri -e \"s/^.*GRUB_ENABLE_CRYPTODISK=.*/GRUB_ENABLE_CRYPTODISK=y/g\" /mnt/etc/default/grub" >> post-install-hook.sh
-    #echo "echo \"luks_boot $PARTITION_UUID q luks\" >> /mnt/etc/crypttab" >> post-install-hook.sh
-    echo "sed -ri -e \"s/^.*GRUB_CMDLINE_LINUX=.*/GRUB_CMDLINE_LINUX='cryptdevice=UUID=$PARTITION_UUID:luks_boot'/g\" /mnt/etc/default/grub" >> post-install-hook.sh
-}
-
 fn_generate_hook_post_crypttab_initramfs() {
     PARTITION_PATH=$(ls -l /dev/disk/by-path | grep $1 | cut -d ' ' -f 9)
     CRYPT_OPTION="luks"
     ! [ -z $2 ] && CRYPT_OPTION+=",header=/luks_root_header.img:UUID=$2"
     echo "echo \"luks_root /dev/disk/by-path/$PARTITION_PATH none $CRYPT_OPTION\" > /mnt/etc/crypttab.initramfs" >> post-install-hook.sh
+    ! [ -z $2 ] && echo "mv luks_root_header.img /mnt/boot"
 }
 
 #####
@@ -97,17 +48,8 @@ fn_setup_disks() {
     BOOT_PARTITION="sda2"
     read -p "Which partition is to be used for /boot? [$BOOT_PARTITION]: "
     ! [ -z $REPLY ] && BOOT_PARTITION=$REPLY
-    read -p "Encrypt /boot partition? [y/N]: "
-    ! [ -z $REPLY ] && ENCRYPT_BOOT_PARTITION=$REPLY
 
-    if [ "$ENCRYPT_BOOT_PARTITION" == "y" ] ; then
-        cryptsetup luksFormat --type luks1 /dev/$BOOT_PARTITION
-        cryptsetup open /dev/$BOOT_PARTITION luks_boot
-        BOOT_PATH="/dev/mapper/luks_boot"
-        fn_generate_hook_post_grub $BOOT_PARTITION
-    else
-        BOOT_PATH="/dev/$BOOT_PARTITION"
-    fi
+    BOOT_PATH="/dev/$BOOT_PARTITION"
     mkfs.ext4 $BOOT_PATH
 
     ROOT_PARTITION="sda3"
@@ -140,54 +82,4 @@ fn_setup_disks() {
     fn_setup_btrfs_subvolumes $ROOT_PATH $BOOT_PATH $EFI_PATH
 }
 
-fn_simple_btrfs() {
-    DRIVE_TO_USE="/dev/sda"
-    read -p "Which drive to use? [$DRIVE_TO_USE]: "
-    ! [ -z $REPLY ] && DRIVE_TO_USE=$REPLY
-
-    fn_create_gpt_layout $DRIVE_TO_USE
-    fn_create_efi_partition $DRIVE_TO_USE
-    mkfs.fat -F 32 "${DRIVE_TO_USE}1"
-    fn_create_boot_partition $DRIVE_TO_USE
-    mkfs.ext4 "${DRIVE_TO_USE}2"
-    fn_create_linux_partition $DRIVE_TO_USE
-    mkfs.btrfs "${DRIVE_TO_USE}3"
-    fn_setup_btrfs_subvolumes "${DRIVE_TO_USE}3" "${DRIVE_TO_USE}2" "${DRIVE_TO_USE}1"
-}
-
-fn_encrypted_btrfs() {
-    DRIVE_TO_USE="sda"
-    read -p "Which drive to use? [$DRIVE_TO_USE]: "
-    ! [ -z $REPLY ] && DRIVE_TO_USE=$REPLY
-    FULL_DRIVE="/dev/$DRIVE_TO_USE"
-
-    fn_create_gpt_layout $FULL_DRIVE
-    fn_create_efi_partition $FULL_DRIVE
-    mkfs.fat -F 32 "${FULL_DRIVE}1"
-    fn_create_boot_partition $FULL_DRIVE
-    mkfs.ext4 "${FULL_DRIVE}2"
-    fn_create_linux_partition $FULL_DRIVE
-    cryptsetup luksFormat "${FULL_DRIVE}3"
-    cryptsetup open "${FULL_DRIVE}3" luks_root
-    mkfs.btrfs /dev/mapper/luks_root
-    fn_setup_btrfs_subvolumes /dev/mapper/luks_root "${FULL_DRIVE}2" "${FULL_DRIVE}1"
-    fn_generate_hook_post_crypttab_initramfs "${DRIVE_TO_USE}3"
-}
-
-DISK_SETUP_CHOICE="1"
-echo "1) Simple btrfs (1 EFI partition, 1 /boot partition and 1 btrfs partition)"
-echo "2) Encrypted btrfs (1 EFI partition, 1 /boot partition and 1 encrypted btrfs partition)"
-echo "3) Encrypted btrfs with detached header (1 EFI partition, 1 /boot partition and 1 encrypted btrfs partition with detached luks header)"
-read -p "Choose disk setup method [$DISK_SETUP_CHOICE]: "
-! [ -z $REPLY ] && DISK_SETUP_CHOICE=$REPLY
-
-case $DISK_SETUP_CHOICE in
-    1)
-        fn_simple_btrfs ;;
-    2)
-        fn_encrypted_btrfs ;;
-    3)
-        fn_detached_encrypted_btrfs ;;
-    4)
-        fn_setup_disks ;;
-esac
+fn_setup_disks

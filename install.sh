@@ -148,7 +148,8 @@ grub_config() {
 read -p "Do you want to run disk setup? [y/N]: "
 [ "$REPLY" == "y" ] && bash <(curl -sL https://raw.githubusercontent.com/mortyr45/fulcrum-arch/master/disk-setup.sh)
 
-[ -f "pre-install-hook.sh" ] && bash pre-install-hook.sh &&
+[ -f "pre-install-hook.sh" ] && bash pre-install-hook.sh
+
 prompts
 bootstrap
 grub_config

@@ -11,7 +11,7 @@ prompts() {
 	ls /sys/firmware/efi/efivars > /dev/null
 	[ $? == 0 ] && EFI_INSTALL=1
 
-	SCRIPT_TIMEZONE="Asia/Tokyo"
+	SCRIPT_TIMEZONE="Etc/UTC"
 	read -p "Time zone [$SCRIPT_TIMEZONE]: "
 	! [ -z $REPLY ] && SCRIPT_TIMEZONE=$REPLY
 	
@@ -123,11 +123,12 @@ bootstrap() {
 	arch-chroot /mnt useradd -m -G wheel $SCRIPT_USERNAME
 	echo $SCRIPT_USERNAME:$SCRIPT_PASSWORD | arch-chroot /mnt chpasswd
 
-	#arch-chroot /mnt ln -sf /usr/share/zoneinfo/$SCRIPT_TIMEZONE /etc/localtime
+	arch-chroot /mnt hostnamectl hostname $SCRIPT_HOSTNAME
+	arch-chroot /mnt timedatectl set-timezone $SCRIPT_TIMEZONE
 	#arch-chroot /mnt sed -ri -e "s/^#$SCRIPT_LOCALE/$SCRIPT_LOCALE/g" /etc/locale.gen
 	#arch-chroot /mnt locale-gen
-	#echo "$SCRIPT_HOSTNAME" > /mnt/etc/hostname
-	#arch-chroot /mnt cp /usr/share/locale/$SCRIPT_GRUB_LANG\@quot/LC_MESSAGES/grub.mo /boot/grub/locale/$SCRIPT_GRUB_LANG.mo
+	arch-chroot /mnt localectl set-locale en_US.UTF-8
+	arch-chroot /mnt localectl set-keymap us-acentos
 	arch-chroot /mnt sed -ri -e "s/^HOOKS=.*/HOOKS=\(systemd\ keyboard\ modconf\ block\ sd-encrypt\ fsck\ filesystems\)/g" /etc/mkinitcpio.conf
 	echo "COMPRESSION=\"cat\"" >> /mnt/etc/mkinitcpio.conf
 
@@ -150,6 +151,7 @@ read -p "Do you want to run disk setup? [y/N]: "
 
 [ -f "pre-install-hook.sh" ] && bash pre-install-hook.sh
 
+bash <(curl -sL https://raw.githubusercontent.com/mortyr45/fulcrum-arch/master/files/pacman.sh) 3
 prompts
 bootstrap
 grub_config

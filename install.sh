@@ -66,7 +66,7 @@ prompts() {
 # Bootstrap
 #####
 bootstrap() {
-	INSTALL_PACKAGES="base btrfs-progs cronie efibootmgr dkms grub linux-firmware mkinitcpio nano networkmanager sudo"
+	INSTALL_PACKAGES="base btrfs-progs cronie efibootmgr dkms grub linux-firmware mkinitcpio nano networkmanager sudo which"
 
 	timedatectl set-ntp true
 	case $SCRIPT_CPU_MITIGATIONS in
@@ -125,8 +125,8 @@ bootstrap() {
 
 	arch-chroot /mnt hostnamectl hostname $SCRIPT_HOSTNAME
 	arch-chroot /mnt timedatectl set-timezone $SCRIPT_TIMEZONE
-	#arch-chroot /mnt sed -ri -e "s/^#$SCRIPT_LOCALE/$SCRIPT_LOCALE/g" /etc/locale.gen
-	#arch-chroot /mnt locale-gen
+	arch-chroot /mnt sed -ri -e "s/^#$SCRIPT_LOCALE/$SCRIPT_LOCALE/g" /etc/locale.gen
+	arch-chroot /mnt locale-gen
 	arch-chroot /mnt localectl set-locale en_US.UTF-8
 	arch-chroot /mnt localectl set-keymap us-acentos
 	arch-chroot /mnt sed -ri -e "s/^HOOKS=.*/HOOKS=\(systemd\ keyboard\ modconf\ block\ sd-encrypt\ fsck\ filesystems\)/g" /etc/mkinitcpio.conf

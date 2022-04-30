@@ -86,17 +86,14 @@ fn_chaotic_aur() {
     echo "Include = /etc/pacman.d/chaotic-mirrorlist" >> /etc/pacman.conf
 }
 
-if [ "$1" == "auto" ] ; then
-    fn_enable_multilib
-    fn_katsuo_repo
-    fn_chaotic_aur
-    exit 0
-fi
-
 PACMAN_CONFIG_OPTIONS="1"
-printf "1) Enable cache cleaning hook\n2) Enable multilib (32-bit packages)\n3) Enable katsuo repository\n4) Enable chaotic-aur (requires multilib)\n0) nothing\n"
-read -p "Choose pacman configuration options [$PACMAN_CONFIG_OPTIONS]: "
-! [ -z $REPLY ] $$ PACMAN_CONFIG_OPTIONS=$REPLY
+if [ -z $1 ] ; then
+    printf "1) Enable cache cleaning hook\n2) Enable multilib (32-bit packages)\n3) Enable katsuo repository\n4) Enable chaotic-aur (requires multilib)\n0) nothing\n"
+    read -p "Choose pacman configuration options [$PACMAN_CONFIG_OPTIONS]: "
+    ! [ -z $REPLY ] $$ PACMAN_CONFIG_OPTIONS=$REPLY
+else
+    PACMAN_CONFIG_OPTIONS=$1
+fi
 
 for CHOICE in $PACMAN_CONFIG_OPTIONS ; do
     case $CHOICE in
@@ -110,5 +107,3 @@ for CHOICE in $PACMAN_CONFIG_OPTIONS ; do
             fn_chaotic_aur ;;
     esac
 done
-
-pacman -Syy

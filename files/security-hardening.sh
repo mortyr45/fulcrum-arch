@@ -21,9 +21,13 @@ fn_ssh_server_hardening() {
     pacman -Q openssh
     if [ $? == 0 ] ; then
         sed -ri -e "s/^#Port.*/Port\ 22/g" /etc/ssh/sshd_config
+        sed -ri -e "s/^#HostKey\ /etc/ssh/ssh_host_rsa_key/HostKey\ /etc/ssh/ssh_host_rsa_key/g"
+        sed -ri -e "s/^#HostKey\ /etc/ssh/ssh_host_ed25519_key/HostKey\ /etc/ssh/ssh_host_ed25519_key/g"
         sed -ri -e "s/^#PermitRootLogin.*/PermitRootLogin\ no/g" /etc/ssh/sshd_config
         sed -ri -e "s/^#MaxAuthTries.*/MaxAuthTries\n 3/g" /etc/ssh/sshd_config
         sed -ri -e "s/^#PasswordAuthentication.*/PasswordAuthentication\ no/g" /etc/ssh/sshd_config
+        echo "KexAlgorithms curve25519-sha256,curve25519-sha256@libssh.org,diffie-hellman-group14-sha256,diffie-hellman-group16-sha512,diffie-hellman-group18-sha512" >> /etc/ssh/sshd_config
+        echo "MACs umac-128-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-sha2-512-etm@openssh.com" >> /etc/ssh/sshd_config
         systemctl reload sshd.service
     fi
 }

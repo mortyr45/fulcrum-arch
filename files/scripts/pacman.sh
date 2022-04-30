@@ -90,7 +90,7 @@ PACMAN_CONFIG_OPTIONS="1"
 if [ -z $1 ] ; then
     printf "1) Enable cache cleaning hook\n2) Enable multilib (32-bit packages)\n3) Enable katsuo repository\n4) Enable chaotic-aur (requires multilib)\n0) nothing\n"
     read -p "Choose pacman configuration options [$PACMAN_CONFIG_OPTIONS]: "
-    ! [ -z $REPLY ] $$ PACMAN_CONFIG_OPTIONS=$REPLY
+    ! [ -z $REPLY ] && PACMAN_CONFIG_OPTIONS=$REPLY
 else
     PACMAN_CONFIG_OPTIONS=$1
 fi

@@ -49,4 +49,4 @@ case $GNOME_INSTALLATION_TYPE in
 		gnome_bare ;;
 esac
 
-systemctl enable gdm
+systemctl enable gdm.service

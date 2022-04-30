@@ -132,8 +132,8 @@ bootstrap() {
 	arch-chroot /mnt sed -ri -e "s/^HOOKS=.*/HOOKS=\(systemd\ keyboard\ modconf\ block\ sd-encrypt\ fsck\ filesystems\)/g" /etc/mkinitcpio.conf
 	echo "COMPRESSION=\"cat\"" >> /mnt/etc/mkinitcpio.conf
 
-	arch-chroot /mnt systemctl enable NetworkManager
-	arch-chroot /mnt systemctl enable cronie
+	arch-chroot /mnt systemctl enable NetworkManager.service
+	arch-chroot /mnt systemctl enable cronie.service
 }
 
 #####

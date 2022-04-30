@@ -35,7 +35,7 @@ prompts() {
 	[ "$REPLY" == "y" ] && SCRIPT_OS_PROBER="os-prober"
 	
 	SCRIPT_KERNEL="1"
-	printf "Which kernel(s) would you like to install?\n1) linux-lts\n2) linux\n3) linux-hardened\n4) linux-zen\n0) without kernel\n"
+	printf "Which kernel(s) would you like to install?\n1) linux-lts\n2) linux\n3) linux-hardened\n4) linux-zen\n[kernel package name]) custom kernel\n0) without kernel\n"
 	read -p "Choose multiple of them, by separating the numbers with a ' ' [$SCRIPT_KERNEL]: ";
 	! [ -z $REPLY ] && SCRIPT_KERNEL=$REPLY
 	
@@ -151,7 +151,7 @@ read -p "Do you want to run disk setup? [y/N]: "
 
 [ -f "pre-install-hook.sh" ] && bash pre-install-hook.sh
 
-bash <(curl -sL https://raw.githubusercontent.com/mortyr45/fulcrum-arch/master/files/pacman.sh) 3
+bash <(curl -sL https://raw.githubusercontent.com/mortyr45/fulcrum-arch/master/files/scripts/pacman.sh) 3
 prompts
 bootstrap
 grub_config

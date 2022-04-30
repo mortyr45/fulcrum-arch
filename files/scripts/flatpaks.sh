@@ -19,7 +19,6 @@ org.gnome.Calculator \
 org.gnome.Calendar \
 org.gnome.Characters \
 org.gnome.clocks \
-org.gnome.Extensions \
 org.gnome.FileRoller \
 org.gnome.Firmware \
 org.gnome.Logs \

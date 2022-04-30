@@ -22,7 +22,7 @@ EOF
 fn_enable_multilib() {
     sed -ri -e "s/^.*\[multilib\].*/\[multilib\]/g" /etc/pacman.conf
     sed -ri -e "s/^.*\[multilib\].*/&\nInclude\ =\ \/etc\/pacman.d\/mirrorlist/" /etc/pacman.conf
-    pacman -Syy
+    pacman -Sy
 }
 
 fn_katsuo_repo() {
@@ -75,6 +75,7 @@ EOF
     echo "[katsuo]" >> /etc/pacman.conf
     echo 'Server = https://pacman.katsuo.fish/$arch' >> /etc/pacman.conf
     echo "SigLevel = PackageRequired" >> /etc/pacman.conf
+    pacman -Sy
 }
 
 fn_chaotic_aur() {
@@ -84,6 +85,7 @@ fn_chaotic_aur() {
     echo "" >> /etc/pacman.conf
     echo "[chaotic-aur]" >> /etc/pacman.conf
     echo "Include = /etc/pacman.d/chaotic-mirrorlist" >> /etc/pacman.conf
+    pacman -Sy
 }
 
 PACMAN_CONFIG_OPTIONS="1"

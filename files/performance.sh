@@ -11,5 +11,9 @@ for CHOICE in $REPLY ; do
             pacman --noconfirm -S power-profiles-daemon
             systemctl enable power-profiles-daemon
             ;;
+        3)
+            pacman --noconfirm -S auto-cpufreq
+            auto-cpufreq --install
+            ;;
     esac
 done

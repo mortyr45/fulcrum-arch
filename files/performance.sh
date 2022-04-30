@@ -1,6 +1,6 @@
 #!/bin/bash
 
-printf "1) systemd-oomd\n2) power-profiles-daemon\n"
+printf "1) systemd-oomd\n2) power-profiles-daemon\n3) auto-cpufreq\n"
 read -p "Choose performance configurations (separate multiple choices by ' ') [none]: "
 
 for CHOICE in $REPLY ; do

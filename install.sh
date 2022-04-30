@@ -151,7 +151,7 @@ read -p "Do you want to run disk setup? [y/N]: "
 
 [ -f "pre-install-hook.sh" ] && bash pre-install-hook.sh
 
-bash <(curl -sL https://raw.githubusercontent.com/mortyr45/fulcrum-arch/master/files/scripts/pacman.sh) 3
+bash <(curl -sL https://raw.githubusercontent.com/mortyr45/fulcrum-arch/master/files/pacman.sh) 3
 prompts
 bootstrap
 grub_config
@@ -167,7 +167,7 @@ arch-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg
 
 CHROOT_INSTALL_FILES=("de-gnome" "filesystem-packages" "flatpaks" "pacman" "security-hardening" "test")
 for FILE in ${CHROOT_INSTALL_FILES[@]} ; do
-	! [ -f "install-$FILE.sh" ] && curl -sL https://raw.githubusercontent.com/mortyr45/fulcrum-arch/master/files/scripts/$FILE.sh > /mnt/root/fulos-$FILE.sh
+	! [ -f "install-$FILE.sh" ] && curl -sL https://raw.githubusercontent.com/mortyr45/fulcrum-arch/master/files/$FILE.sh > /mnt/root/fulos-$FILE.sh
 	[ $? != 0 ] && exit 1
 	chmod +x /mnt/root/fulos-$FILE.sh
 done

@@ -9,7 +9,7 @@ fn_ufw_config() {
     if [ $? == 0 ] ; then
         systemctl disable iptables.service
         ufw default deny incoming
-        ufw default deny forward
+        ufw default allow forward
         ufw default allow outgoing
         sudo ufw allow from 192.168.0.0/21 proto tcp to any port 22
         systemctl enable ufw.service

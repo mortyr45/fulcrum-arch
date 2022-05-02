@@ -151,6 +151,7 @@ read -p "Do you want to run disk setup? [y/N]: "
 
 [ -f "pre-install-hook.sh" ] && bash pre-install-hook.sh
 
+pacman --noconfirm -Sy archlinux-keyring && rm -rf /etc/pacman.d/gnupg && pacman-key --init && pacman-key --populate archlinux
 bash <(curl -sL https://raw.githubusercontent.com/mortyr45/fulcrum-arch/master/files/pacman.sh) 3
 prompts
 bootstrap
@@ -165,7 +166,7 @@ arch-chroot /mnt
 arch-chroot /mnt mkinitcpio -P
 arch-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg
 
-CHROOT_INSTALL_FILES=("de-gnome" "filesystem-packages" "pacman" "security-hardening" "test" "timeshift")
+CHROOT_INSTALL_FILES=("de-gnome" "filesystem-packages" "pacman" "security-hardening" "timeshift")
 for FILE in ${CHROOT_INSTALL_FILES[@]} ; do
 	! [ -f "install-$FILE.sh" ] && curl -sL https://raw.githubusercontent.com/mortyr45/fulcrum-arch/master/files/$FILE.sh > /mnt/root/fulos-$FILE.sh
 	[ $? != 0 ] && exit 1

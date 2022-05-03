@@ -34,8 +34,8 @@ fn_generate_hook_post_grub() {
     echo "cryptsetup luksAddKey /dev/$ROOT_PARTITION /mnt/crypto_keyfile.bin" >> post-install-hook.sh
     echo "sed -ri -e \"s/^#GRUB_ENABLE_CRYPTODISK=.*/GRUB_ENABLE_CRYPTODISK=y/g\" /mnt/etc/default/grub" >> post-install-hook.sh
     echo "sed -ri -e \"s/^GRUB_CMDLINE_LINUX=.*/GRUB_CMDLINE_LINUX='cryptdevice=UUID=$1:luks_root'/g\" /mnt/etc/default/grub" >> post-install-hook.sh
-    echo "\"luks_root /dev/disk/by-uuid/$1 /crypto_keyfile.bin luks \" > /mnt/etc/crypttab.initramfs" >> post-install-hook.sh
-    echo "sed -ri -e \"s/^FILES=.*/FILES=(/crypto_keyfile.bin)/g\" /mnt/etc/mkinitcpio.conf"  >> post-install-hook.sh
+    echo "echo \"luks_root /dev/disk/by-uuid/$1 /crypto_keyfile.bin luks \" > /mnt/etc/crypttab.initramfs" >> post-install-hook.sh
+    echo "sed -ri -e \"s/^FILES=.*/FILES=(\/crypto_keyfile.bin)/g\" /mnt/etc/mkinitcpio.conf"  >> post-install-hook.sh
 }
 
 fn_generate_hook_post_crypttab_initramfs() {

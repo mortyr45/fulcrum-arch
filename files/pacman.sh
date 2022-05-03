@@ -84,6 +84,7 @@ fn_chaotic_aur() {
     pacman --noconfirm -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst' 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst'
     echo "" >> /etc/pacman.conf
     echo "[chaotic-aur]" >> /etc/pacman.conf
+    echo "IgnorePkg = auto-cpufreq timeshift timeshift-autosnap"
     echo "Include = /etc/pacman.d/chaotic-mirrorlist" >> /etc/pacman.conf
     pacman -Sy
 }

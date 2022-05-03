@@ -13,7 +13,8 @@ for CHOICE in $REPLY ; do
             ;;
         3)
             pacman --noconfirm -S auto-cpufreq
-            auto-cpufreq --install
+            systemctl enable --now auto-cpufreq
             ;;
     esac
 done
+#gnome-shell-extension-cpufreq

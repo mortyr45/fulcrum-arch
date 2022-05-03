@@ -32,7 +32,8 @@ gnome_bare() {
 	nautilus \
 	noto-fonts \
 	noto-fonts-emoji \
-	pipewire-media-session
+	pipewire-media-session \
+	xdg-user-dirs-gtk
 }
 
 GNOME_INSTALLATION_TYPE="1"
@@ -50,3 +51,4 @@ case $GNOME_INSTALLATION_TYPE in
 esac
 
 systemctl enable gdm.service
+gsettings set org.gnome.mutter experimental-features "['scale-monitor-framebuffer']"

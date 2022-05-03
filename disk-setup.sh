@@ -28,7 +28,7 @@ fn_setup_btrfs_subvolumes() {
 }
 
 fn_generate_hook_post_grub() {
-    echo "dd id=/dev/urandom of=/mnt/crypto_keyfile.bin bs=512 count=4" >> post-install-hook.sh
+    echo "dd if=/dev/urandom of=/mnt/crypto_keyfile.bin bs=512 count=4" >> post-install-hook.sh
     echo "chmod 400 /crypto_keyfile.bin" >> post-install-hook.sh
     echo "cp /crypto_keyfile.bin /mnt/crypto_keyfile.bin" >> post-install-hook.sh
     echo "cryptsetup luksAddKey /dev/$ROOT_PARTITION /mnt/crypto_keyfile.bin" >> post-install-hook.sh
@@ -51,6 +51,14 @@ fn_generate_hook_post_crypttab_initramfs() {
 #####
 # Control functions
 #####
+
+fn_setup_efi_partition() {
+    EFI_PARTITION="sda1"
+    read -p "Which partition is to be used for EFI? [$EFI_PARTITION]: "
+    ! [ -z $REPLY ] && EFI_PARTITION=$REPLY
+    EFI_PATH="/dev/$EFI_PARTITION"
+    mkfs.fat -F 32 $EFI_PATH
+}
 
 fn_setup_boot_partition() {
     BOOT_PARTITION="sda2"
@@ -80,11 +88,7 @@ fn_setup_encrypted_root_detached() {
 }
 
 fn_setup_disks() {
-    EFI_PARTITION="sda1"
-    read -p "Which partition is to be used for EFI? [$EFI_PARTITION]: "
-    ! [ -z $REPLY ] && EFI_PARTITION=$REPLY
-    EFI_PATH="/dev/$EFI_PARTITION"
-    mkfs.fat -F 32 $EFI_PATH
+    fn_setup_efi_partition
 
     read -p "Would you like to use a separate /boot partition? [y/N]: "
     ! [ -z $REPLY ] && SEPARATE_BOOT_PARTITION=$REPLY

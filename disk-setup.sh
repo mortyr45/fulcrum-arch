@@ -27,6 +27,11 @@ fn_setup_btrfs_subvolumes() {
     echo "mount --mkdir $EFI_PARTITION /mnt/boot/EFI" >> pre-install-hook.sh
 }
 
+fn_generate_hook_post_grub() {
+    sed -ri -e "s/^#GRUB_ENABLE_CRYPTODISK=.*/GRUB_ENABLE_CRYPTODISK=y/g" /etc/default/grub
+    sed -ri -e "s/^GRUB_CMDLINE_LINUX=.*/GRUB_CMDLINE_LINUX=\"cryptdevice=UUID=$1:luks_root\"/g" /etc/default/grub
+}
+
 fn_generate_hook_post_crypttab_initramfs() {
     PARTITION_PATH=$(ls -l /dev/disk/by-path | grep $1 | cut -d ' ' -f 9)
     [ -z $PARTITION_PATH ] && PARTITION_PATH=$(ls -l /dev/disk/by-path | grep $1 | cut -d ' ' -f 10)
@@ -52,7 +57,7 @@ fn_setup_boot_partition() {
 fn_setup_encrypted_root() {
     cryptsetup luksFormat /dev/$ROOT_PARTITION
     cryptsetup open /dev/$ROOT_PARTITION luks_root
-    fn_generate_hook_post_crypttab_initramfs $ROOT_PARTITION
+    fn_generate_hook_post_grub $(blkid -s UUID -o value /dev/$ROOT_PARTITION)
 }
 
 fn_setup_encrypted_root_detached() {

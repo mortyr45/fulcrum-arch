@@ -5,9 +5,14 @@
 #####
 
 fn_setup_btrfs_subvolumes() {
-    BTRFS_PARTITION=$1
-    BOOT_PARTITION=$2
-    EFI_PARTITION=$3
+    if [ -z $3 ] ; then
+        BTRFS_PARTITION=$1
+        EFI_PARTITION=$2
+    else
+        BTRFS_PARTITION=$1
+        BOOT_PARTITION=$2
+        EFI_PARTITION=$3
+    fi
     mount $BTRFS_PARTITION /mnt
     btrfs subvolume create /mnt/@
     btrfs subvolume create /mnt/@home
@@ -18,13 +23,19 @@ fn_setup_btrfs_subvolumes() {
     echo "mount --mkdir $BTRFS_PARTITION -o subvol=@home /mnt/home" >> pre-install-hook.sh
     echo "mount --mkdir $BTRFS_PARTITION -o subvol=@cache /mnt/var/cache" >> pre-install-hook.sh
     echo "mount --mkdir $BTRFS_PARTITION -o subvol=@log /mnt/var/log" >> pre-install-hook.sh
-    echo "mount --mkdir $BOOT_PARTITION /mnt/boot" >> pre-install-hook.sh
+    ! [ -z $3 ] && echo "mount --mkdir $BOOT_PARTITION /mnt/boot" >> pre-install-hook.sh
     echo "mount --mkdir $EFI_PARTITION /mnt/boot/EFI" >> pre-install-hook.sh
 }
 
 fn_generate_hook_post_grub() {
+    echo "dd id=/dev/urandom of=/mnt/crypto_keyfile.bin bs=512 count=4" >> post-install-hook.sh
+    echo "chmod 400 /crypto_keyfile.bin" >> post-install-hook.sh
+    echo "cp /crypto_keyfile.bin /mnt/crypto_keyfile.bin" >> post-install-hook.sh
+    echo "cryptsetup luksAddKey /dev/$ROOT_PARTITION /mnt/crypto_keyfile.bin" >> post-install-hook.sh
     echo "sed -ri -e \"s/^#GRUB_ENABLE_CRYPTODISK=.*/GRUB_ENABLE_CRYPTODISK=y/g\" /mnt/etc/default/grub" >> post-install-hook.sh
     echo "sed -ri -e \"s/^GRUB_CMDLINE_LINUX=.*/GRUB_CMDLINE_LINUX='cryptdevice=UUID=$1:luks_root'/g\" /mnt/etc/default/grub" >> post-install-hook.sh
+    echo "\"luks_root /dev/disk/by-uuid/$1 /crypto_keyfile.bin luks \" > /mnt/etc/crypttab.initramfs" >> post-install-hook.sh
+    echo "sed -ri -e \"s/^FILES=.*/FILES=(/crypto_keyfile.bin)/g\" /mnt/etc/mkinitcpio.conf"  >> post-install-hook.sh
 }
 
 fn_generate_hook_post_crypttab_initramfs() {
@@ -41,14 +52,6 @@ fn_generate_hook_post_crypttab_initramfs() {
 # Control functions
 #####
 
-fn_setup_efi_partition() {
-    EFI_PARTITION="sda1"
-    read -p "Which partition is to be used for EFI? [$EFI_PARTITION]: "
-    ! [ -z $REPLY ] && EFI_PARTITION=$REPLY
-    EFI_PATH="/dev/$EFI_PARTITION"
-    mkfs.fat -F 32 $EFI_PATH
-}
-
 fn_setup_boot_partition() {
     BOOT_PARTITION="sda2"
     read -p "Which partition is to be used for /boot? [$BOOT_PARTITION]: "
@@ -58,23 +61,34 @@ fn_setup_boot_partition() {
 }
 
 fn_setup_encrypted_root() {
-    cryptsetup luksFormat /dev/$ROOT_PARTITION
+    cryptsetup luksFormat --type luks1 /dev/$ROOT_PARTITION
     cryptsetup open /dev/$ROOT_PARTITION luks_root
     fn_generate_hook_post_grub $(blkid -s UUID -o value /dev/$ROOT_PARTITION)
+}
+
+fn_setup_encrypted_root_separate() {
+    cryptsetup luksFormat /dev/$ROOT_PARTITION
+    cryptsetup open /dev/$ROOT_PARTITION luks_root
+    fn_generate_hook_post_crypttab_initramfs $ROOT_PARTITION
 }
 
 fn_setup_encrypted_root_detached() {
     dd if=/dev/zero of=luks_root_header.img bs=16M count=1
     cryptsetup luksFormat /dev/$ROOT_PARTITION --offset 32768 --header luks_root_header.img
     cryptsetup open --header luks_root_header.img /dev/$ROOT_PARTITION luks_root
-    BOOT_UUID=$(blkid -s UUID -o value $BOOT_PATH)
-    fn_generate_hook_post_crypttab_initramfs $ROOT_PARTITION $BOOT_UUID
+    fn_generate_hook_post_crypttab_initramfs $ROOT_PARTITION $(blkid -s UUID -o value $BOOT_PATH)
 }
 
 fn_setup_disks() {
-    fn_setup_efi_partition
-    
-    fn_setup_boot_partition
+    EFI_PARTITION="sda1"
+    read -p "Which partition is to be used for EFI? [$EFI_PARTITION]: "
+    ! [ -z $REPLY ] && EFI_PARTITION=$REPLY
+    EFI_PATH="/dev/$EFI_PARTITION"
+    mkfs.fat -F 32 $EFI_PATH
+
+    read -p "Would you like to use a separate /boot partition? [y/N]: "
+    ! [ -z $REPLY ] && SEPARATE_BOOT_PARTITION=$REPLY
+    [ "$SEPARATE_BOOT_PARTITION" == "y" ] && fn_setup_boot_partition
 
     ROOT_PARTITION="sda3"
     read -p "Which partition is to be used for root? [$ROOT_PARTITION]: "
@@ -83,11 +97,15 @@ fn_setup_disks() {
     ! [ -z $REPLY ] && ENCRYPT_ROOT_PARTITION=$REPLY
 
     if [ "$ENCRYPT_ROOT_PARTITION" == "y" ] ; then
-        read -p "Detach encryption header for root partition? [y/N]: "
-        ! [ -z $REPLY ] && DETACH_HEADER=$REPLY
+        if [ "$SEPARATE_BOOT_PARTITION" == "y" ] ; then
+            read -p "Detach encryption header for root partition? [y/N]: "
+            ! [ -z $REPLY ] && DETACH_HEADER=$REPLY
 
-        if [ "$DETACH_HEADER" == "y" ] ; then
-            fn_setup_encrypted_root_detached
+            if [ "$DETACH_HEADER" == "y" ] ; then
+                fn_setup_encrypted_root_detached
+            else
+                fn_setup_encrypted_root_separate
+            fi
         else
             fn_setup_encrypted_root
         fi
@@ -98,7 +116,11 @@ fn_setup_disks() {
     fi
     mkfs.btrfs $ROOT_PATH
 
-    fn_setup_btrfs_subvolumes $ROOT_PATH $BOOT_PATH $EFI_PATH
+    if [ "$SEPARATE_BOOT_PARTITION" == "y" ] ; then
+        fn_setup_btrfs_subvolumes $ROOT_PATH $BOOT_PATH $EFI_PATH
+    else
+        fn_setup_btrfs_subvolumes $ROOT_PATH $EFI_PATH
+    fi
 }
 
 fn_setup_disks

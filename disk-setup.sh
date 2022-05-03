@@ -28,8 +28,8 @@ fn_setup_btrfs_subvolumes() {
 }
 
 fn_generate_hook_post_grub() {
-    echo "sed -ri -e \"s/^#GRUB_ENABLE_CRYPTODISK=.*/GRUB_ENABLE_CRYPTODISK=y/g\" /etc/default/grub" >> post-install-hook.sh
-    echo "sed -ri -e \"s/^GRUB_CMDLINE_LINUX=.*/GRUB_CMDLINE_LINUX=\"cryptdevice=UUID=$1:luks_root\"/g\" /etc/default/grub" >> post-install-hook.sh
+    echo "sed -ri -e \"s/^#GRUB_ENABLE_CRYPTODISK=.*/GRUB_ENABLE_CRYPTODISK=y/g\" /mnt/etc/default/grub" >> post-install-hook.sh
+    echo "sed -ri -e \"s/^GRUB_CMDLINE_LINUX=.*/GRUB_CMDLINE_LINUX=\"cryptdevice=UUID=$1:luks_root\"/g\" /mnt/etc/default/grub" >> post-install-hook.sh
 }
 
 fn_generate_hook_post_crypttab_initramfs() {

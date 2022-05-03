@@ -29,7 +29,7 @@ fn_setup_btrfs_subvolumes() {
 
 fn_generate_hook_post_grub() {
     echo "sed -ri -e \"s/^#GRUB_ENABLE_CRYPTODISK=.*/GRUB_ENABLE_CRYPTODISK=y/g\" /mnt/etc/default/grub" >> post-install-hook.sh
-    echo "sed -ri -e \"s/^GRUB_CMDLINE_LINUX=.*/GRUB_CMDLINE_LINUX=\"cryptdevice=UUID=$1:luks_root\"/g\" /mnt/etc/default/grub" >> post-install-hook.sh
+    echo "sed -ri -e \"s/^GRUB_CMDLINE_LINUX=.*/GRUB_CMDLINE_LINUX='cryptdevice=UUID=$1:luks_root'/g\" /mnt/etc/default/grub" >> post-install-hook.sh
 }
 
 fn_generate_hook_post_crypttab_initramfs() {
@@ -55,9 +55,16 @@ fn_setup_boot_partition() {
 }
 
 fn_setup_encrypted_root() {
-    cryptsetup luksFormat /dev/$ROOT_PARTITION
+    cryptsetup luksFormat --type luks1 /dev/$ROOT_PARTITION
     cryptsetup open /dev/$ROOT_PARTITION luks_root
     fn_generate_hook_post_grub $(blkid -s UUID -o value /dev/$ROOT_PARTITION)
+}
+
+fn_setup_encrypted_root_separate() {
+    cryptsetup luksFormat /dev/$ROOT_PARTITION
+    cryptsetup open /dev/$ROOT_PARTITION luks_root
+    BOOT_UUID=$(blkid -s UUID -o value $BOOT_PATH)
+    fn_generate_hook_post_crypttab_initramfs $ROOT_PARTITION
 }
 
 fn_setup_encrypted_root_detached() {
@@ -93,7 +100,7 @@ fn_setup_disks() {
             if [ "$DETACH_HEADER" == "y" ] ; then
                 fn_setup_encrypted_root_detached
             else
-                fn_setup_encrypted_root
+                fn_setup_encrypted_root_separate
             fi
         else
             fn_setup_encrypted_root

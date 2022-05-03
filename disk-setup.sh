@@ -28,7 +28,7 @@ fn_setup_btrfs_subvolumes() {
 }
 
 fn_generate_hook_post_grub() {
-    echo "dd if=/dev/urandom of=/mnt/crypto_keyfile.bin bs=512 count=4" >> post-install-hook.sh
+    echo "dd if=/dev/urandom of=/crypto_keyfile.bin bs=1024 count=4" >> post-install-hook.sh
     echo "chmod 400 /crypto_keyfile.bin" >> post-install-hook.sh
     echo "cp /crypto_keyfile.bin /mnt/crypto_keyfile.bin" >> post-install-hook.sh
     echo "cryptsetup luksAddKey /dev/$ROOT_PARTITION /mnt/crypto_keyfile.bin" >> post-install-hook.sh

@@ -56,6 +56,7 @@ fn_setup_encrypted_root() {
     echo "cryptsetup luksAddKey /dev/$ROOT_PARTITION /mnt/crypto_keyfile.bin" >> post-install-hook.sh
     echo "echo \"luks_root /dev/disk/by-uuid/$ROOT_UUID /crypto_keyfile.bin luks \" > /mnt/etc/crypttab.initramfs" >> post-install-hook.sh
     echo "sed -ri -e \"s/^FILES=.*/FILES=(\/crypto_keyfile.bin)/g\" /mnt/etc/mkinitcpio.conf"  >> post-install-hook.sh
+    echo "sed -ri -e \"s/^#GRUB_ENABLE_CRYPTODISK=.*/GRUB_ENABLE_CRYPTODISK=y/g\" /mnt/etc/default/grub" >> post-install-hook.sh
 }
 
 fn_setup_encrypted_root_separate() {

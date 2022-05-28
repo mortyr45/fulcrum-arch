@@ -11,6 +11,12 @@ prompts() {
 	ls /sys/firmware/efi/efivars > /dev/null
 	[ $? == 0 ] && EFI_INSTALL=1
 
+	GRUB_BOOT_MBR_DISK="/dev/sda"
+	if [ EFI_INSTALL == 0 ] ; then
+		read -p "The disk to use for MBR [$GRUB_BOOT_MBR_DISK]: "
+		! [ -z $REPLY ] && GRUB_BOOT_MBR_DISK=$REPLY
+	fi
+
 	SCRIPT_TIMEZONE="Etc/UTC"
 	read -p "Time zone [$SCRIPT_TIMEZONE]: "
 	! [ -z $REPLY ] && SCRIPT_TIMEZONE=$REPLY
@@ -66,7 +72,9 @@ prompts() {
 # Bootstrap
 #####
 bootstrap() {
-	INSTALL_PACKAGES="base btrfs-progs cronie efibootmgr dkms grub linux-firmware mkinitcpio nano networkmanager sudo which"
+	INSTALL_PACKAGES="base btrfs-progs cronie dkms grub linux-firmware mkinitcpio nano networkmanager sudo which"
+	
+	[ EFI_INSTALL == 1 ] && INSTALL_PACKAGES+=" efibootmgr"
 
 	timedatectl set-ntp true
 	case $SCRIPT_CPU_MITIGATIONS in
@@ -159,7 +167,11 @@ grub_config
 
 [ -f "post-install-hook.sh" ] && bash post-install-hook.sh
 
-arch-chroot /mnt grub-install --target=x86_64-efi --bootloader-id=$SCRIPT_BOOTLOADER_ID
+if [ EFI_INSTALL == 1] ; then
+	arch-chroot /mnt grub-install --target=x86_64-efi --bootloader-id=$SCRIPT_BOOTLOADER_ID
+else
+	arch-chroot /mnt grub-install --target=i386-pc $GRUB_BOOT_MBR_DISK
+fi
 
 arch-chroot /mnt
 

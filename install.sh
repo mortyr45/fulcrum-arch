@@ -160,7 +160,7 @@ read -p "Do you want to run disk setup? [y/N]: "
 [ -f "pre-install-hook.sh" ] && bash pre-install-hook.sh
 
 pacman --noconfirm -Sy archlinux-keyring && pacman-key --populate archlinux
-bash <(curl -sL https://raw.githubusercontent.com/mortyr45/fulcrum-arch/master/files/pacman.sh) 3
+#bash <(curl -sL https://raw.githubusercontent.com/mortyr45/fulcrum-arch/master/files/pacman.sh) 3
 prompts
 bootstrap
 grub_config

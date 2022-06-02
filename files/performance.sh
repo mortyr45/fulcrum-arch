@@ -13,7 +13,7 @@ for CHOICE in $REPLY ; do
             ;;
         3)
             pacman --noconfirm -S auto-cpufreq
-            systemctl enable --now auto-cpufreq
+            systemctl enable --now auto-cpufreq.service
             ;;
     esac
 done

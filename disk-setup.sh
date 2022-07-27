@@ -19,12 +19,12 @@ fn_setup_btrfs_subvolumes() {
     btrfs subvolume create /mnt/@cache
     btrfs subvolume create /mnt/@log
     umount /mnt
-    echo "mount $BTRFS_PARTITION -o subvol=@ /mnt" >> pre-install-hook.sh
-    echo "mount --mkdir $BTRFS_PARTITION -o subvol=@home /mnt/home" >> pre-install-hook.sh
-    echo "mount --mkdir $BTRFS_PARTITION -o subvol=@cache /mnt/var/cache" >> pre-install-hook.sh
-    echo "mount --mkdir $BTRFS_PARTITION -o subvol=@log /mnt/var/log" >> pre-install-hook.sh
-    ! [ -z $3 ] && echo "mount --mkdir $BOOT_PARTITION /mnt/boot" >> pre-install-hook.sh
-    echo "mount --mkdir $EFI_PARTITION /mnt/boot/EFI" >> pre-install-hook.sh
+    mount $BTRFS_PARTITION -o subvol=@ /mnt
+    mount --mkdir $BTRFS_PARTITION -o subvol=@home /mnt/home
+    mount --mkdir $BTRFS_PARTITION -o subvol=@cache /mnt/var/cache
+    mount --mkdir $BTRFS_PARTITION -o subvol=@log /mnt/var/log
+    ! [ -z $3 ] && mount --mkdir $BOOT_PARTITION /mnt/boot
+    mount --mkdir $EFI_PARTITION /mnt/boot/EFI
 }
 
 #####

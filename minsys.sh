@@ -2,7 +2,7 @@
 
 ### Packages
 pacman --noconfirm -Sy archlinux-keyring && pacman-key --populate archlinux
-pacstrap /mnt base btrfs-progs cronie dkms grub linux linux-headers linux-firmware mkinitcpio nano networkmanager pacman-contrib sudo which
+pacstrap /mnt base btrfs-progs cronie dkms efibootmgr grub linux linux-headers linux-firmware mkinitcpio nano networkmanager pacman-contrib sudo which
 genfstab -U /mnt > /mnt/etc/fstab
 echo "Defaults editor=/usr/bin/rnano" >> /mnt/etc/sudoers
 sed -ri -e "s/^#.*%wheel ALL=\(ALL:ALL\) ALL/%wheel ALL=(ALL:ALL) ALL/g" /mnt/etc/sudoers

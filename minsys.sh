@@ -33,7 +33,8 @@ sed -ri -e "s/^HOOKS=.*/HOOKS=\(systemd\ keyboard\ modconf\ block\ sd-encrypt\ f
 sed -ri -e "s/^GRUB_DEFAULT=.*/GRUB_DEFAULT=saved/g" /mnt/etc/default/grub
 sed -ri -e "s/^GRUB_TIMEOUT=.*/GRUB_TIMEOUT=3/g" /mnt/etc/default/grub
 sed -ri -e "s/^GRUB_TIMEOUT_STYLE=.*/GRUB_TIMEOUT_STYLE=menu/g" /mnt/etc/default/grub
-sed -ri -e "s/^*GRUB_SAVEDEFAULT=.*/GRUB_SAVEDEFAULT=true/g" /mnt/etc/default/grub
+sed -ri -e "s/^.*GRUB_SAVEDEFAULT=.*/GRUB_SAVEDEFAULT=true/g" /mnt/etc/default/grub
+sed -ri -e "s/^.*GRUB_DISABLE_SUBMENU=.*/GRUB_DISABLE_SUBMENU=y/g" /mnt/etc/default/grub
 arch-chroot /mnt grub-install --target=x86_64-efi --bootloader-id=$(cat /mnt/etc/hostname)
 arch-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg
 

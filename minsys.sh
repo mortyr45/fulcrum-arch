@@ -30,6 +30,8 @@ echo $USERNAME:$PASSWORD | arch-chroot /mnt chpasswd
 ### Basic system config
 systemd-firstboot --force --root=/mnt --prompt-locale --prompt-keymap --prompt-timezone --prompt-hostname
 sed -ri -e "s/^HOOKS=.*/HOOKS=\(systemd\ keyboard\ modconf\ block\ sd-encrypt\ fsck\ filesystems\)/g" /mnt/etc/mkinitcpio.conf
+sed -ri -e '/^\#fallback_config/,$ d' /etc/mkinitcpio.d/linux.preset
+arch-chroot /mnt mkinitcpio -P
 sed -ri -e "s/^GRUB_DEFAULT=.*/GRUB_DEFAULT=saved/g" /mnt/etc/default/grub
 sed -ri -e "s/^GRUB_TIMEOUT=.*/GRUB_TIMEOUT=3/g" /mnt/etc/default/grub
 sed -ri -e "s/^GRUB_TIMEOUT_STYLE=.*/GRUB_TIMEOUT_STYLE=menu/g" /mnt/etc/default/grub

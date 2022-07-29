@@ -79,9 +79,10 @@ fn_setup_encrypted_root_detached() {
 fn_setup_disks() {
     fn_setup_efi_partition
 
+    SEPARATE_BOOT_PARTITION="y"
     read -p "Would you like to use a separate /boot partition? [Y/n]: "
     ! [ -z $REPLY ] && SEPARATE_BOOT_PARTITION=$REPLY
-    [ "$SEPARATE_BOOT_PARTITION" == "n" ] && fn_setup_boot_partition
+    [ "$SEPARATE_BOOT_PARTITION" == "y" ] && fn_setup_boot_partition
 
     ROOT_PARTITION="sda3"
     read -p "Which partition is to be used for root? [$ROOT_PARTITION]: "

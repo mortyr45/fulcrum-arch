@@ -28,7 +28,7 @@ done
 echo $USERNAME:$PASSWORD | arch-chroot /mnt chpasswd
 
 ### Basic system config
-#systemd-firstboot --force --root=/mnt --prompt-locale --prompt-keymap --prompt-timezone --prompt-hostname
+systemd-firstboot --force --root=/mnt --prompt-locale --prompt-keymap --prompt-timezone --prompt-hostname
 sed -ri -e "s/^HOOKS=.*/HOOKS=\(systemd\ keyboard\ modconf\ block\ sd-encrypt\ fsck\ filesystems\)/g" /mnt/etc/mkinitcpio.conf
 sed -ri -e '/^\#fallback_config/,$ d' /mnt/etc/mkinitcpio.d/linux.preset
 rm /mnt/boot/initramfs-linux-fallback.img
@@ -40,16 +40,6 @@ sed -ri -e "s/^.*GRUB_SAVEDEFAULT=.*/GRUB_SAVEDEFAULT=true/g" /mnt/etc/default/g
 sed -ri -e "s/^.*GRUB_DISABLE_SUBMENU=.*/GRUB_DISABLE_SUBMENU=y/g" /mnt/etc/default/grub
 arch-chroot /mnt grub-install --target=x86_64-efi --bootloader-id=$(cat /mnt/etc/hostname)
 arch-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg
-rm /mnt/etc/{machine-id,localtime,hostname,shadow,locale.conf}
-cat > /mnt/etc/systemd/system/systemd-firstboot.service.d/install.conf<< EOF
-[Service]
-ExecStart=
-ExecStart=/usr/bin/systemd-firstboot --prompt
-
-[Install]
-WantedBy=sysinit.target
-EOF
-arch-chroot /mnt systemctl enable systemd-firstboot.service
 
 
 
